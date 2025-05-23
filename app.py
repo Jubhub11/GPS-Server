@@ -17,7 +17,6 @@ def receive_gps():
 
     data = request.get_json()
 
-    # Prüfe, ob alle benötigten Felder vorhanden sind
     if not data or "lat" not in data or "long" not in data or "device_id" not in data:
         return "Invalid data", 400
 
@@ -25,7 +24,7 @@ def receive_gps():
         lat = float(data["lat"])
         lon = float(data["long"])
         timestamp = data.get("timestamp", datetime.utcnow().isoformat())
-        device_id = str(data["ID"])
+        device_id = str(data["device_id"])
     except Exception as e:
         return f"Error parsing data: {str(e)}", 400
 
