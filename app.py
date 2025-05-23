@@ -16,13 +16,14 @@ def receive_gps():
     if auth != "tQJxIjDs440Q":
         return "Unauthorized", 403
     data = request.get_json()
-    if not data or "lat" not in data or "long" not in data:
+    if not data or "lat" not in data or "long" not in data or "ID" not in data:
         return "Invalid data", 400
 
     lat = data["lat"][0]
     lon = data["long"][0]
     timestamp = data["timestamp"][0] if "timestamp" in data else datetime.utcnow().isoformat()
-    gps_data.append({"lat": lat, "lon": lon, "timestamp": timestamp})
+    device_id = ids[i] if i < len(ids) else "unknown"
+    gps_data.append({"lat": lat, "lon": lon, "timestamp": timestamp, "device_id": device_id})
     return "OK", 200
 
 @app.route("/api/gps")
