@@ -28,3 +28,12 @@ def receive_gps():
 @app.route("/api/gps")
 def api_gps():
     return jsonify(gps_data)
+
+@app.route("/api/clear", methods=["POST"])
+def clear_gps_data():
+    auth = request.headers.get("Authorization")
+    if auth != "tQJxIjDs440Q":
+        return "Unauthorized", 403
+    gps_data.clear()
+    return "Cleared", 200
+    
