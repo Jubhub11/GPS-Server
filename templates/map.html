@@ -72,7 +72,7 @@
     fetchGPSData();               // sofort laden
     setInterval(fetchGPSData, 10000);  // alle 10 Sekunden
 
-sync function resetTrack() {
+async function resetTrack() {
   const response = await fetch('/api/clear', {
     method: 'POST',
     headers: {
