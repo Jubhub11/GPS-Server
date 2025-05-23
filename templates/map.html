@@ -194,6 +194,11 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
+    const taskColors = {};
+const availableColors = [
+  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', 
+  '#D4A5A5', '#9B59B6', '#3498DB', '#E67E22', '#2ECC71'
+];
     const map = L.map('map').setView([47.7333, 16.4000], 13);
     let fields = {};
     let tasks = [];
@@ -269,43 +274,89 @@
       }
     }
 
-    function finishTaskCreation() {
-      if (selectedFields.size === 0) {
-        alert('Bitte wählen Sie mindestens ein Feld aus');
-        return;
-      }
+function finishTaskCreation() {
+  if (selectedFields.size === 0) {
+    alert('Bitte wählen Sie mindestens ein Feld aus');
+    return;
+  }
 
-      const taskId = `task-${tasks.length + 1}`;
-      const task = {
-        id: taskId,
-        fields: Array.from(selectedFields),
-        status: 'pending'
-      };
+  const taskName = prompt('Bitte geben Sie einen Namen für den Auftrag ein:', `Auftrag ${tasks.length + 1}`);
+  if (!taskName) return;
 
-      tasks.push(task);
-      updateTaskPanel();
-      
-      isCreatingTask = false;
-      selectedFields.clear();
-    }
+  const taskId = `task-${Date.now()}`;
+  const taskColor = getTaskColor(taskId);
+  
+  const task = {
+    id: taskId,
+    name: taskName,
+    color: taskColor,
+    fields: Array.from(selectedFields).map(fieldId => ({
+      id: fieldId,
+      completed: false
+    })),
+    status: 'in_progress',
+    createdAt: new Date().toISOString()
+  };
+
+  tasks.push(task);
+  
+  // Felder mit der Auftragsfarbe markieren
+  task.fields.forEach(field => {
+    fields[field.id].layer.setStyle({
+      color: taskColor,
+      fillColor: taskColor,
+      fillOpacity: 0.2
+    });
+  });
+
+  updateTaskPanel();
+  updateTaskLegend();
+  
+  isCreatingTask = false;
+  selectedFields.clear();
+}
 
     function updateTaskPanel() {
-      const taskContainer = document.getElementById('active-tasks');
-      taskContainer.innerHTML = '';
+  const taskContainer = document.getElementById('active-tasks');
+  taskContainer.innerHTML = '';
 
-      tasks.forEach(task => {
-        const taskElement = document.createElement('div');
-        taskElement.innerHTML = `
-          <div style="margin: 10px 0; padding: 5px; border: 1px solid #ccc;">
-            <strong>Auftrag ${task.id}</strong><br>
-            Felder: ${task.fields.join(', ')}<br>
-            Status: ${task.status}
-            <button onclick="completeTask('${task.id}')">Abschließen</button>
+  tasks.forEach(task => {
+    const completedFields = task.fields.filter(f => f.completed).length;
+    const totalFields = task.fields.length;
+    const progress = (completedFields / totalFields) * 100;
+
+    const taskElement = document.createElement('div');
+    taskElement.className = 'task-item';
+    taskElement.style.borderLeft = `4px solid ${task.color}`;
+    taskElement.innerHTML = `
+      <h4>${task.name}</h4>
+      <div class="task-progress">
+        <div class="progress-bar" style="width: ${progress}%; background-color: ${task.color}"></div>
+      </div>
+      <div>Fortschritt: ${completedFields}/${totalFields} Felder</div>
+      <div class="field-list">
+        ${task.fields.map(field => `
+          <div class="field-item">
+            <input type="checkbox" 
+              ${field.completed ? 'checked' : ''} 
+              onchange="toggleFieldCompletion('${task.id}', '${field.id}')"
+            >
+            <span>${field.id}</span>
           </div>
-        `;
-        taskContainer.appendChild(taskElement);
-      });
-    }
+        `).join('')}
+      </div>
+      <div class="task-buttons">
+        ${task.fields.every(f => f.completed) ? 
+          `<button onclick="deleteTask('${task.id}')">Auftrag löschen</button>` :
+          ''
+        }
+      </div>
+    `;
+    taskContainer.appendChild(taskElement);
+  });
+  
+  updateTaskLegend();
+}
 
     function completeTask(taskId) {
       const task = tasks.find(t => t.id === taskId);
@@ -581,52 +632,70 @@ function updateLoadedFieldsList() {
     });
   }
 
-  function toggleFieldCompletion(taskId, fieldId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (task) {
-      const field = task.fields.find(f => f.id === fieldId);
-      if (field) {
-        field.completed = !field.completed;
-        
-        // Update field style
-        fields[fieldId].layer.setStyle({
-          color: field.completed ? '#4CAF50' : '#3388ff',
-          fillOpacity: field.completed ? 0.4 : 0.2
-        });
-        
-        updateTaskPanel();
-      }
-    }
-  }
-
-  function deleteTask(taskId) {
-    if (!confirm('Möchten Sie diesen Auftrag wirklich löschen?')) return;
-    
-    const taskIndex = tasks.findIndex(t => t.id === taskId);
-    if (taskIndex !== -1) {
-      const task = tasks[taskIndex];
+function toggleFieldCompletion(taskId, fieldId) {
+  const task = tasks.find(t => t.id === taskId);
+  if (task) {
+    const field = task.fields.find(f => f.id === fieldId);
+    if (field) {
+      field.completed = !field.completed;
       
-      // Reset field styles
-      task.fields.forEach(field => {
-        fields[field.id].layer.setStyle({
-          color: '#3388ff',
-          fillOpacity: 0.2
-        });
+      fields[fieldId].layer.setStyle({
+        color: task.color,
+        fillColor: task.color,
+        fillOpacity: field.completed ? 0.4 : 0.2
       });
       
-      tasks.splice(taskIndex, 1);
       updateTaskPanel();
     }
   }
-
-    document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('fields-dropdown');
-    const container = document.getElementById('loaded-fields-container');
+}
+function deleteTask(taskId) {
+  if (!confirm('Möchten Sie diesen Auftrag wirklich löschen?')) return;
+  
+  const taskIndex = tasks.findIndex(t => t.id === taskId);
+  if (taskIndex !== -1) {
+    const task = tasks[taskIndex];
     
-    if (!container.contains(event.target)) {
-      dropdown.classList.remove('show');
-    }
+    // Reset field styles
+    task.fields.forEach(field => {
+      fields[field.id].layer.setStyle({
+        color: '#3388ff',
+        fillColor: '#3388ff',
+        fillOpacity: 0.2
+      });
+    });
+    
+    delete taskColors[task.id];
+    tasks.splice(taskIndex, 1);
+    updateTaskPanel();
+    updateTaskLegend();
+  }
+}
+function updateTaskLegend() {
+  const legendList = document.getElementById('legend-list');
+  legendList.innerHTML = '<h4>Aufträge</h4>';
+  
+  tasks.forEach(task => {
+    const completedFields = task.fields.filter(f => f.completed).length;
+    const totalFields = task.fields.length;
+    
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="legend-color" style="background:${task.color}"></span>
+      ${task.name} (${completedFields}/${totalFields})
+    `;
+    legendList.appendChild(li);
   });
+}
+
+  function getTaskColor(taskId) {
+  if (!taskColors[taskId]) {
+    const usedColors = Object.values(taskColors);
+    const availableColor = availableColors.find(color => !usedColors.includes(color)) || availableColors[0];
+    taskColors[taskId] = availableColor;
+  }
+  return taskColors[taskId];
+}
 
     // Initial laden
     loadFields();
