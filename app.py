@@ -13,7 +13,7 @@ def index():
 @app.route("/gps", methods=["POST"])
 def receive_gps():
     auth = request.headers.get("Authorization")
-    if auth != "xxxxxxxxxxxx":
+    if auth != "tQJxIjDs440Q":
         return "Unauthorized", 403
     data = request.get_json()
     if not data or "lat" not in data or "long" not in data:
