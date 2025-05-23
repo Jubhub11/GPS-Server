@@ -71,6 +71,13 @@
 
     fetchGPSData();               // sofort laden
     setInterval(fetchGPSData, 10000);  // alle 10 Sekunden
+
+    function resetTrack() {
+  polyline.setLatLngs([]); // Linie leeren
+
+  markers.forEach(marker => map.removeLayer(marker)); // Alle Marker entfernen
+  markers = [];
+}
   </script>
 </body>
 </html>
