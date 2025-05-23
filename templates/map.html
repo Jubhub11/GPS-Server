@@ -4,6 +4,7 @@
   <title>GPS Tracker</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/@tmcw/togeojson@5.8.1/dist/togeojson.umd.js"></script>
   <style>
     #map { height: 90vh; width: 100%; }
     #reset-btn {
@@ -47,10 +48,32 @@
       vertical-align: middle;
       border-radius: 50%;
     }
+    .field-normal {
+      fillColor: "#3388ff";
+      weight: 2;
+      opacity: 0.6;
+      fillOpacity: 0.2;
+    }
+    .field-highlighted {
+      fillColor: "#ff3333";
+      weight: 2;
+      opacity: 0.8;
+      fillOpacity: 0.4;
+    }
+    #task-panel {
+      position: fixed;
+      top: 80px;
+      left: 10px;
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+      max-width: 250px;
+    }
   </style>
 </head>
 <body>
-
   <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
 
   <div id="legend">
@@ -58,20 +81,142 @@
     <ul id="legend-list"></ul>
   </div>
 
+  <div id="task-panel">
+    <h4>Aufträge</h4>
+    <button onclick="createNewTask()">Neuer Auftrag</button>
+    <div id="active-tasks"></div>
+  </div>
+
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([47.7333, 16.4000], 13);
+    let fields = {};
+    let tasks = [];
+    let markers = [];
+    let polylines = {};
+    const deviceColors = {};
+    const colorList = ['red', 'blue', 'green', 'orange', 'purple', 'magenta', 'teal', 'brown'];
+    let isCreatingTask = false;
+    let selectedFields = new Set();
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    let markers = [];
-    let polylines = {};
-    const deviceColors = {};
-    const colorList = ['red', 'blue', 'green', 'orange', 'purple', 'magenta', 'teal', 'brown'];
+    // KML Dateien laden
+    async function loadFields() {
+      const kmlFiles = [
+        '/fields/area1.kml',
+        '/fields/area2.kml'
+        // ... weitere KML-Dateien
+      ];
+
+      for (const kmlFile of kmlFiles) {
+        try {
+          const response = await fetch(kmlFile);
+          const kmlText = await response.text();
+          const parser = new DOMParser();
+          const kml = parser.parseFromString(kmlText, 'text/xml');
+          const geojson = toGeoJSON.kml(kml);
+
+          geojson.features.forEach(feature => {
+            const fieldId = feature.properties.name || `field-${Object.keys(fields).length + 1}`;
+            const field = L.geoJSON(feature, {
+              style: {
+                color: '#3388ff',
+                weight: 2,
+                opacity: 0.6,
+                fillOpacity: 0.2
+              }
+            }).addTo(map);
+
+            field.on('click', () => handleFieldClick(fieldId));
+            
+            fields[fieldId] = {
+              layer: field,
+              status: 'normal',
+              name: fieldId
+            };
+          });
+        } catch (error) {
+          console.error(`Error loading KML file ${kmlFile}:`, error);
+        }
+      }
+    }
+
+    function handleFieldClick(fieldId) {
+      if (isCreatingTask) {
+        selectedFields.add(fieldId);
+        fields[fieldId].layer.setStyle({
+          color: '#ff3333',
+          fillOpacity: 0.4
+        });
+      }
+    }
+
+    function createNewTask() {
+      if (isCreatingTask) {
+        finishTaskCreation();
+      } else {
+        isCreatingTask = true;
+        selectedFields.clear();
+        alert('Bitte wählen Sie die Felder für den neuen Auftrag aus');
+      }
+    }
+
+    function finishTaskCreation() {
+      if (selectedFields.size === 0) {
+        alert('Bitte wählen Sie mindestens ein Feld aus');
+        return;
+      }
+
+      const taskId = `task-${tasks.length + 1}`;
+      const task = {
+        id: taskId,
+        fields: Array.from(selectedFields),
+        status: 'pending'
+      };
+
+      tasks.push(task);
+      updateTaskPanel();
+      
+      isCreatingTask = false;
+      selectedFields.clear();
+    }
+
+    function updateTaskPanel() {
+      const taskContainer = document.getElementById('active-tasks');
+      taskContainer.innerHTML = '';
+
+      tasks.forEach(task => {
+        const taskElement = document.createElement('div');
+        taskElement.innerHTML = `
+          <div style="margin: 10px 0; padding: 5px; border: 1px solid #ccc;">
+            <strong>Auftrag ${task.id}</strong><br>
+            Felder: ${task.fields.join(', ')}<br>
+            Status: ${task.status}
+            <button onclick="completeTask('${task.id}')">Abschließen</button>
+          </div>
+        `;
+        taskContainer.appendChild(taskElement);
+      });
+    }
+
+    function completeTask(taskId) {
+      const task = tasks.find(t => t.id === taskId);
+      if (task) {
+        task.status = 'completed';
+        task.fields.forEach(fieldId => {
+          fields[fieldId].layer.setStyle({
+            color: '#3388ff',
+            fillOpacity: 0.2
+          });
+        });
+        updateTaskPanel();
+      }
+    }
 
     function getColor(deviceId) {
       if (!deviceColors[deviceId]) {
@@ -106,11 +251,9 @@
       const res = await fetch('/api/gps');
       const data = await res.json();
 
-      // Marker entfernen
       markers.forEach(marker => map.removeLayer(marker));
       markers = [];
 
-      // Polylines entfernen
       for (const id in polylines) {
         map.removeLayer(polylines[id]);
       }
@@ -148,9 +291,6 @@
       }
     }
 
-    fetchGPSData();
-    setInterval(fetchGPSData, 10000);
-
     async function resetTrack() {
       const response = await fetch('/api/clear', {
         method: 'POST',
@@ -167,6 +307,11 @@
         alert("Fehler beim Löschen der Daten vom Server.");
       }
     }
+
+    // Initial laden
+    loadFields();
+    fetchGPSData();
+    setInterval(fetchGPSData, 10000);
   </script>
 </body>
 </html>
