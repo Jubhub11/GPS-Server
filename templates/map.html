@@ -12,26 +12,57 @@
       font-size: 16px;
     }
     #legend {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
       background: white;
+      border: 1px solid #ccc;
       padding: 10px;
-      border-radius: 5px;
+      margin: 10px;
+      position: fixed;
+      top: 80px;
+      left: 10px;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
       font-size: 14px;
       box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      max-width: 180px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    #legend h4 {
+      margin: 0 0 5px;
+    }
+    #legend ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #legend li {
+      margin-bottom: 6px;
+    }
+    .legend-color {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+      vertical-align: middle;
+      border-radius: 50%;
     }
   </style>
 </head>
 <body>
   <h2>Live GPS Tracking</h2>
   <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
+
+  <div id="legend">
+    <h4>Geräte-Legende</h4>
+    <ul id="legend-list"></ul>
+  </div>
+
   <div id="map"></div>
-  <div id="legend"><strong>Legende:</strong><br></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([47.7333, 16.4000], 13);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
@@ -61,11 +92,12 @@
     }
 
     function updateLegend() {
-      const legend = document.getElementById("legend");
-      legend.innerHTML = "<strong>Legende:</strong><br>";
-      for (const id in deviceColors) {
-        const color = deviceColors[id];
-        legend.innerHTML += `<span style="color:${color}; font-weight:bold;">&#9679;</span> ${id}<br>`;
+      const legendList = document.getElementById("legend-list");
+      legendList.innerHTML = "";
+      for (const [id, color] of Object.entries(deviceColors)) {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="legend-color" style="background:${color}"></span>${id}`;
+        legendList.appendChild(li);
       }
     }
 
@@ -77,7 +109,7 @@
       markers.forEach(marker => map.removeLayer(marker));
       markers = [];
 
-      // Polylines neu aufbauen
+      // Polylines entfernen
       for (const id in polylines) {
         map.removeLayer(polylines[id]);
       }
@@ -109,7 +141,6 @@
 
       updateLegend();
 
-      // Auf letzten Punkt zentrieren
       if (data.length > 0) {
         const last = data[data.length - 1];
         map.panTo([last.lat, last.lon]);
