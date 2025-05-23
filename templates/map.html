@@ -72,11 +72,23 @@
     fetchGPSData();               // sofort laden
     setInterval(fetchGPSData, 10000);  // alle 10 Sekunden
 
-    function resetTrack() {
-  polyline.setLatLngs([]); // Linie leeren
+sync function resetTrack() {
+  const response = await fetch('/api/clear', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'tQJxIjDs440Q'
+    }
+  });
 
-  markers.forEach(marker => map.removeLayer(marker)); // Alle Marker entfernen
-  markers = [];
+  if (response.ok) {
+    // Linie und Marker in der Karte lokal entfernen
+    polyline.setLatLngs([]);
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+    alert("GPS-Daten wurden gelöscht.");
+  } else {
+    alert("Fehler beim Löschen der Daten vom Server.");
+  }
 }
   </script>
 </body>
