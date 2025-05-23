@@ -131,6 +131,38 @@
     margin: 5px 0;
     font-size: 12px;
   }
+   #loaded-fields-container {
+    position: fixed;
+    top: 10px;
+    left: 500px;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  }
+
+  .fields-dropdown {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .fields-dropdown.show {
+    display: block;
+  }
+
+  .field-entry {
+    padding: 3px;
+    cursor: pointer;
+  }
+
+  .field-entry:hover {
+    background-color: #f0f0f0;
+  }
   </style>
 </head>
 <body>
@@ -141,6 +173,11 @@
     <button onclick="loadSelectedFiles()">Felder laden</button>
     <div class="file-list" id="selected-files"></div>
   </div>
+
+<div id="loaded-fields-container">
+  <button onclick="toggleFieldsDropdown()">Geladene Felder ▼</button>
+  <div id="fields-dropdown" class="fields-dropdown"></div>
+</div>
 
   <div id="legend">
     <h4>Geräte-Legende</h4>
@@ -381,15 +418,25 @@
       updateFileList();
     }
 
-    function updateFileList() {
-      const fileList = document.getElementById('selected-files');
-      fileList.innerHTML = '';
-      selectedFiles.forEach(file => {
-        const div = document.createElement('div');
-        div.textContent = file.name;
-        fileList.appendChild(div);
-      });
-    }
+function updateLoadedFieldsList() {
+    const dropdown = document.getElementById('fields-dropdown');
+    dropdown.innerHTML = '';
+    
+    Object.entries(fields).forEach(([fieldId, field]) => {
+      const fieldEntry = document.createElement('div');
+      fieldEntry.className = 'field-entry';
+      fieldEntry.textContent = `${fieldId} (${field.fileName || 'Unbekannte Datei'})`;
+      fieldEntry.onclick = () => {
+        map.fitBounds(field.layer.getBounds());
+      };
+      dropdown.appendChild(fieldEntry);
+    });
+  }
+
+    function toggleFieldsDropdown() {
+    const dropdown = document.getElementById('fields-dropdown');
+    dropdown.classList.toggle('show');
+  }
 
     async function loadSelectedFiles() {
       if (selectedFiles.length === 0) {
@@ -452,21 +499,12 @@
         map.fitBounds(bounds);
       }
 
-      alert(`${Object.keys(fields).length} Felder wurden erfolgreich geladen.`);
-    }
-
-
-    let tasks = [];
+      updateLoadedFieldsList();
+    alert(`${Object.keys(fields).length} Felder wurden erfolgreich geladen.`);
   
-  function createNewTask() {
-    if (isCreatingTask) {
-      finishTaskCreation();
-    } else {
-      isCreatingTask = true;
-      selectedFields.clear();
-      alert('Bitte wählen Sie die Felder für den neuen Auftrag aus');
     }
-  }
+
+  
 
   function finishTaskCreation() {
     if (selectedFields.size === 0) {
@@ -580,6 +618,15 @@
       updateTaskPanel();
     }
   }
+
+    document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('fields-dropdown');
+    const container = document.getElementById('loaded-fields-container');
+    
+    if (!container.contains(event.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
 
     // Initial laden
     loadFields();
