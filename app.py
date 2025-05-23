@@ -6,6 +6,7 @@ app = Flask(__name__)
 gps_data = []  # Liste zum Speichern der GPS-Punkte
 
 @app.route("/")
+
 def index():
     return render_template("map.html", points=gps_data)
 

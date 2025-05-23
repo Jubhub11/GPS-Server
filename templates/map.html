@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GPS Tracker</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 90vh; width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>Live GPS Tracking</h2>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([48.2082, 16.3738], 13);  // Wien als Startpunkt
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    async function fetchAndDisplayPoints() {
+      const response = await fetch('/api/gps');
+      const points = await response.json();
+      points.forEach(p => {
+        L.marker([p.lat, p.lon])
+          .addTo(map)
+          .bindPopup(`Zeit: ${p.timestamp}`);
+      });
+    }
+
+    fetchAndDisplayPoints();
+    setInterval(() => {
+      map.eachLayer(layer => {
+        if (layer instanceof L.Marker) map.removeLayer(layer);
+      });
+      fetchAndDisplayPoints();
+    }, 10000);  // alle 10 Sekunden aktualisieren
+  </script>
+</body>
+</html>
