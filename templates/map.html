@@ -37,6 +37,49 @@
       });
       fetchAndDisplayPoints();
     }, 10000);  // alle 10 Sekunden aktualisieren
-  </script>
+  <script>
+  const map = L.map('map').setView([48.2, 16.3], 13); // Startposition Wien
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  let polyline = L.polyline([], {color: 'blue'}).addTo(map);
+  let markers = [];
+
+  function formatTimeAgo(timestamp) {
+    const time = new Date(timestamp);
+    const now = new Date();
+    const seconds = Math.floor((now - time) / 1000);
+
+    if (seconds < 60) return `${seconds} Sekunden`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes} Minuten`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours} Stunden`;
+  }
+
+  async function fetchGPSData() {
+    const res = await fetch('/api/gps');
+    const data = await res.json();
+
+    // Marker löschen
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+
+    const latlngs = data.map(d => [d.latitude, d.longitude]);
+    polyline.setLatLngs(latlngs); // Linie zeichnen
+
+    data.forEach(d => {
+      const marker = L.marker([d.latitude, d.longitude])
+        .bindPopup(`Zeit: vor ${formatTimeAgo(d.timestamp)}`)
+        .addTo(map);
+      markers.push(marker);
+    });
+  }
+
+  setInterval(fetchGPSData, 10000);
+  fetchGPSData();
+</script>
+
 </body>
 </html>
