@@ -10,6 +10,16 @@
 </head>
 <body>
   <h2>Live GPS Tracking</h2>
+  <button onclick="resetTrack()">Reset Track</button>
+  <style>
+  #reset-btn {
+    margin: 10px;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+</style>
+<button id="reset-btn" onclick="resetTrack()">Reset Track</button>
+  
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
