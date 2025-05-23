@@ -19,10 +19,10 @@ def receive_gps():
     if not data or "lat" not in data or "long" not in data or "ID" not in data:
         return "Invalid data", 400
 
-    lat = data["lat"][0]
-    lon = data["long"][0]
-    timestamp = data["timestamp"][0] if "timestamp" in data else datetime.utcnow().isoformat()
-    device_id = ids[i] if i < len(ids) else "unknown"
+lat = data["lat"]
+lon = data["long"]
+timestamp = data.get("timestamp", datetime.utcnow().isoformat())
+device_id = data.get("ID", "unknown")
     gps_data.append({"lat": lat, "lon": lon, "timestamp": timestamp, "device_id": device_id})
     return "OK", 200
 
