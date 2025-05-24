@@ -730,9 +730,16 @@ async function loadStoredData() {
     // Jetzt Aufträge setzen
     tasks = data.tasks;
 
-    // Und erst jetzt Farben zuweisen
+    // Stelle sicher, dass jeder Task eine eindeutige Farbe hat
+tasks.forEach(task => {
+  if (!task.color) {
+    task.color = getTaskColor(task.id); // Vergibt neue Farbe, falls keine gespeichert
+  } else {
+    taskColors[task.id] = task.color; // Stelle sicher, dass Farben zugewiesen werden
+  }
+});
     
-
+  applyTaskStyles();
     updateTaskPanel();
     updateTaskLegend();
 
