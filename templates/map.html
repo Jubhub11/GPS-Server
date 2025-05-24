@@ -727,6 +727,23 @@ async function loadStoredData() {
             };
         }
 
+        tasks.forEach(task => {
+  task.fields.forEach(field => {
+    const fieldId = field.id;
+    const isCompleted = field.completed;
+
+    if (fields[fieldId]) {
+      fields[fieldId].layer.setStyle({
+        color: task.color,
+        fillColor: task.color,
+        weight: 2,
+        opacity: 0.6,
+        fillOpacity: isCompleted ? 0.4 : 0.2
+      });
+    }
+  });
+});
+
         // Lade gespeicherte Aufträge
         tasks = data.tasks;
         updateTaskPanel();
@@ -753,6 +770,8 @@ async function loadStoredData() {
   loadStoredData();
   loadFields();
   fetchGPSData();
+  updateTaskPanel();
+updateTaskLegend();
   setInterval(fetchGPSData, 10000);
   </script>
 </body>
