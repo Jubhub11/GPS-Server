@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>WIESER WACHTL1.kml</name>
+	<Schema name="10570MFA2024ERFFL_FLSL_23_20240225100940" id="S_10570MFA2024ERFFL_FLSL_23_20240225100940_DDDSDSSSSSSSSSSSDSSSDSDD">
+		<SimpleField type="double" name="HBNR"><displayName>&lt;b&gt;HBNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="TBNR"><displayName>&lt;b&gt;TBNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="BBK"><displayName>&lt;b&gt;BBK&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FART"><displayName>&lt;b&gt;FART&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FSNR"><displayName>&lt;b&gt;FSNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FSNAME"><displayName>&lt;b&gt;FSNAME&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FNAR_CODE"><displayName>&lt;b&gt;FNAR_CODE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FNAR"><displayName>&lt;b&gt;FNAR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="long" name="SLNR"><displayName>&lt;b&gt;SLNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SNAR_CODE"><displayName>&lt;b&gt;SNAR_CODE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SNAR"><displayName>&lt;b&gt;SNAR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SNAR_ZUSAT"><displayName>&lt;b&gt;SNAR_ZUSAT&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="CODES"><displayName>&lt;b&gt;CODES&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SORTE"><displayName>&lt;b&gt;SORTE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SORTE_ZUSA"><displayName>&lt;b&gt;SORTE_ZUSA&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="BEGR_VAR_C"><displayName>&lt;b&gt;BEGR_VAR_C&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="BEGR_VAR"><displayName>&lt;b&gt;BEGR_VAR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="MENGE_HANF"><displayName>&lt;b&gt;MENGE_HANF&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="AUSPFLANZD"><displayName>&lt;b&gt;AUSPFLANZD&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="LN_ANTEIL"><displayName>&lt;b&gt;LN_ANTEIL&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="LAERCHENWI"><displayName>&lt;b&gt;LAERCHENWI&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FLAECHE_BE"><displayName>&lt;b&gt;FLAECHE_BE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="KEINE_BESC"><displayName>&lt;b&gt;KEINE_BESC&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FLAECHE_BR"><displayName>&lt;b&gt;FLAECHE_BR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FLAECHE_NE"><displayName>&lt;b&gt;FLAECHE_NE&lt;/b&gt;</displayName>
+</SimpleField>
+	</Schema>
+	<Style id="falseColor0">
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>HBNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/HBNR]</td></tr>
+  <tr><td><b>TBNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/TBNR]</td></tr>
+  <tr><td><b>BBK</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/BBK]</td></tr>
+  <tr><td><b>FART</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FART]</td></tr>
+  <tr><td><b>FSNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FSNR]</td></tr>
+  <tr><td><b>FSNAME</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FSNAME]</td></tr>
+  <tr><td><b>FNAR_CODE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FNAR_CODE]</td></tr>
+  <tr><td><b>FNAR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FNAR]</td></tr>
+  <tr><td><b>SLNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SLNR]</td></tr>
+  <tr><td><b>SNAR_CODE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SNAR_CODE]</td></tr>
+  <tr><td><b>SNAR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SNAR]</td></tr>
+  <tr><td><b>SNAR_ZUSAT</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SNAR_ZUSAT]</td></tr>
+  <tr><td><b>CODES</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/CODES]</td></tr>
+  <tr><td><b>SORTE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SORTE]</td></tr>
+  <tr><td><b>SORTE_ZUSA</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SORTE_ZUSA]</td></tr>
+  <tr><td><b>BEGR_VAR_C</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/BEGR_VAR_C]</td></tr>
+  <tr><td><b>BEGR_VAR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/BEGR_VAR]</td></tr>
+  <tr><td><b>MENGE_HANF</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/MENGE_HANF]</td></tr>
+  <tr><td><b>AUSPFLANZD</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/AUSPFLANZD]</td></tr>
+  <tr><td><b>LN_ANTEIL</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/LN_ANTEIL]</td></tr>
+  <tr><td><b>LAERCHENWI</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/LAERCHENWI]</td></tr>
+  <tr><td><b>FLAECHE_BE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FLAECHE_BE]</td></tr>
+  <tr><td><b>KEINE_BESC</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/KEINE_BESC]</td></tr>
+  <tr><td><b>FLAECHE_BR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FLAECHE_BR]</td></tr>
+  <tr><td><b>FLAECHE_NE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FLAECHE_NE]</td></tr>
+</table>]]></text>
+		</BalloonStyle>
+		<PolyStyle>
+			<colorMode>random</colorMode>
+		</PolyStyle>
+	</Style>
+	<Placemark>
+		<name>WIESER WACHTL1</name>
+		<styleUrl>#falseColor0</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#S_10570MFA2024ERFFL_FLSL_23_20240225100940_DDDSDSSSSSSSSSSSDSSSDSDD">
+				<SimpleData name="HBNR">10570</SimpleData>
+				<SimpleData name="TBNR">10570</SimpleData>
+				<SimpleData name="BBK">3034</SimpleData>
+				<SimpleData name="FART">MFA2024</SimpleData>
+				<SimpleData name="FSNR">193</SimpleData>
+				<SimpleData name="FSNAME">WIESER WACHTL 1</SimpleData>
+				<SimpleData name="FNAR_CODE">A</SimpleData>
+				<SimpleData name="FNAR">ACKERLAND</SimpleData>
+				<SimpleData name="SLNR">1</SimpleData>
+				<SimpleData name="SNAR_CODE">138</SimpleData>
+				<SimpleData name="SNAR">WINTERWEICHWEIZEN</SimpleData>
+				<SimpleData name="SNAR_ZUSAT"></SimpleData>
+				<SimpleData name="CODES">PSMCS</SimpleData>
+				<SimpleData name="SORTE"></SimpleData>
+				<SimpleData name="SORTE_ZUSA"></SimpleData>
+				<SimpleData name="BEGR_VAR_C">396</SimpleData>
+				<SimpleData name="BEGR_VAR">VARIANTE 4</SimpleData>
+				<SimpleData name="MENGE_HANF">0</SimpleData>
+				<SimpleData name="AUSPFLANZD"></SimpleData>
+				<SimpleData name="LN_ANTEIL"></SimpleData>
+				<SimpleData name="LAERCHENWI"></SimpleData>
+				<SimpleData name="FLAECHE_BE">0</SimpleData>
+				<SimpleData name="KEINE_BESC"></SimpleData>
+				<SimpleData name="FLAECHE_BR">0.4605</SimpleData>
+				<SimpleData name="FLAECHE_NE">0.4605</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:balloonVisibility>1</gx:balloonVisibility>
+		<Polygon>
+			<extrude>1</extrude>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						16.42293783359653,47.73219051112798,44.8505451111123 16.42365232929006,47.73235017115019,44.84976728912443 16.42417219235258,47.73244337554091,44.84922154154629 16.42471416841141,47.73251545503901,44.84867464285344 16.42560560780463,47.73265630935203,44.84775539580733 16.42549790518401,47.73272880134946,44.8477876111865 16.42558914190447,47.73287275930981,44.84757940843701 16.42539312666755,47.73285541936741,44.84776953607798 16.42513555783477,47.73282631470301,44.84802493359894 16.42492606001735,47.7328021324867,44.8482331065461 16.42471589014597,47.7327642817185,44.84845391660929 16.42448869817793,47.73272067442116,44.84869497362524 16.42403955176654,47.73262719524637,44.8491779146716 16.42356666666323,47.73250454752747,44.84970769938081 16.42287909054323,47.7323329100223,44.85047206096351 16.42293783359653,47.73219051112798,44.8505451111123 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>

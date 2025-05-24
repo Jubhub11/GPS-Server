@@ -731,22 +731,7 @@ async function loadStoredData() {
     tasks = data.tasks;
 
     // Und erst jetzt Farben zuweisen
-    tasks.forEach(task => {
-      task.fields.forEach(field => {
-        const fieldId = field.id;
-        const isCompleted = field.completed;
-
-        if (fields[fieldId]) {
-          fields[fieldId].layer.setStyle({
-            color: task.color,
-            fillColor: task.color,
-            weight: 2,
-            opacity: 0.6,
-            fillOpacity: isCompleted ? 0.4 : 0.2
-          });
-        }
-      });
-    });
+    
 
     updateTaskPanel();
     updateTaskLegend();
@@ -766,14 +751,34 @@ async function loadStoredData() {
   }
 }
 
+function applyTaskStyles() {
+  tasks.forEach(task => {
+    task.fields.forEach(field => {
+      const fieldId = field.id;
+      const isCompleted = field.completed;
 
+      if (fields[fieldId]) {
+        fields[fieldId].layer.setStyle({
+          color: task.color,
+          fillColor: task.color,
+          weight: 2,
+          opacity: 0.6,
+          fillOpacity: isCompleted ? 0.4 : 0.2
+        });
+      }
+    });
+  });
+}
 
 
   // Lade die Daten
-  loadStoredData();
-  loadFields();
+
+  await loadFields();
+  await loadStoredData();
+  applyTaskStyles();
   fetchGPSData();
   setInterval(fetchGPSData, 10000);
+
   </script>
 </body>
 </html>

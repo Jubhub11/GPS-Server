@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>KURZaCKER GRILL.kml</name>
+	<Schema name="10570MFA2024ERFFL_FLSL_23_20240225100940" id="S_10570MFA2024ERFFL_FLSL_23_20240225100940_DDDSDSSSSSSSSSSSDSSSDSDD">
+		<SimpleField type="double" name="HBNR"><displayName>&lt;b&gt;HBNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="TBNR"><displayName>&lt;b&gt;TBNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="BBK"><displayName>&lt;b&gt;BBK&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FART"><displayName>&lt;b&gt;FART&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FSNR"><displayName>&lt;b&gt;FSNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FSNAME"><displayName>&lt;b&gt;FSNAME&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FNAR_CODE"><displayName>&lt;b&gt;FNAR_CODE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="FNAR"><displayName>&lt;b&gt;FNAR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="long" name="SLNR"><displayName>&lt;b&gt;SLNR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SNAR_CODE"><displayName>&lt;b&gt;SNAR_CODE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SNAR"><displayName>&lt;b&gt;SNAR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SNAR_ZUSAT"><displayName>&lt;b&gt;SNAR_ZUSAT&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="CODES"><displayName>&lt;b&gt;CODES&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SORTE"><displayName>&lt;b&gt;SORTE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SORTE_ZUSA"><displayName>&lt;b&gt;SORTE_ZUSA&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="BEGR_VAR_C"><displayName>&lt;b&gt;BEGR_VAR_C&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="BEGR_VAR"><displayName>&lt;b&gt;BEGR_VAR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="MENGE_HANF"><displayName>&lt;b&gt;MENGE_HANF&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="AUSPFLANZD"><displayName>&lt;b&gt;AUSPFLANZD&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="LN_ANTEIL"><displayName>&lt;b&gt;LN_ANTEIL&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="LAERCHENWI"><displayName>&lt;b&gt;LAERCHENWI&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FLAECHE_BE"><displayName>&lt;b&gt;FLAECHE_BE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="KEINE_BESC"><displayName>&lt;b&gt;KEINE_BESC&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FLAECHE_BR"><displayName>&lt;b&gt;FLAECHE_BR&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="FLAECHE_NE"><displayName>&lt;b&gt;FLAECHE_NE&lt;/b&gt;</displayName>
+</SimpleField>
+	</Schema>
+	<Style id="falseColor0">
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>HBNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/HBNR]</td></tr>
+  <tr><td><b>TBNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/TBNR]</td></tr>
+  <tr><td><b>BBK</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/BBK]</td></tr>
+  <tr><td><b>FART</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FART]</td></tr>
+  <tr><td><b>FSNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FSNR]</td></tr>
+  <tr><td><b>FSNAME</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FSNAME]</td></tr>
+  <tr><td><b>FNAR_CODE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FNAR_CODE]</td></tr>
+  <tr><td><b>FNAR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FNAR]</td></tr>
+  <tr><td><b>SLNR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SLNR]</td></tr>
+  <tr><td><b>SNAR_CODE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SNAR_CODE]</td></tr>
+  <tr><td><b>SNAR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SNAR]</td></tr>
+  <tr><td><b>SNAR_ZUSAT</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SNAR_ZUSAT]</td></tr>
+  <tr><td><b>CODES</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/CODES]</td></tr>
+  <tr><td><b>SORTE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SORTE]</td></tr>
+  <tr><td><b>SORTE_ZUSA</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/SORTE_ZUSA]</td></tr>
+  <tr><td><b>BEGR_VAR_C</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/BEGR_VAR_C]</td></tr>
+  <tr><td><b>BEGR_VAR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/BEGR_VAR]</td></tr>
+  <tr><td><b>MENGE_HANF</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/MENGE_HANF]</td></tr>
+  <tr><td><b>AUSPFLANZD</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/AUSPFLANZD]</td></tr>
+  <tr><td><b>LN_ANTEIL</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/LN_ANTEIL]</td></tr>
+  <tr><td><b>LAERCHENWI</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/LAERCHENWI]</td></tr>
+  <tr><td><b>FLAECHE_BE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FLAECHE_BE]</td></tr>
+  <tr><td><b>KEINE_BESC</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/KEINE_BESC]</td></tr>
+  <tr><td><b>FLAECHE_BR</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FLAECHE_BR]</td></tr>
+  <tr><td><b>FLAECHE_NE</b></td><td>$[10570MFA2024ERFFL_FLSL_23_20240225100940/FLAECHE_NE]</td></tr>
+</table>]]></text>
+		</BalloonStyle>
+		<PolyStyle>
+			<colorMode>random</colorMode>
+		</PolyStyle>
+	</Style>
+	<Placemark>
+		<name>KURZaCKER GRILL</name>
+		<styleUrl>#falseColor0</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#S_10570MFA2024ERFFL_FLSL_23_20240225100940_DDDSDSSSSSSSSSSSDSSSDSDD">
+				<SimpleData name="HBNR">10570</SimpleData>
+				<SimpleData name="TBNR">10570</SimpleData>
+				<SimpleData name="BBK">3034</SimpleData>
+				<SimpleData name="FART">MFA2024</SimpleData>
+				<SimpleData name="FSNR">24</SimpleData>
+				<SimpleData name="FSNAME">KURZ�CKER GRILL</SimpleData>
+				<SimpleData name="FNAR_CODE">A</SimpleData>
+				<SimpleData name="FNAR">ACKERLAND</SimpleData>
+				<SimpleData name="SLNR">1</SimpleData>
+				<SimpleData name="SNAR_CODE">138</SimpleData>
+				<SimpleData name="SNAR">WINTERWEICHWEIZEN</SimpleData>
+				<SimpleData name="SNAR_ZUSAT"></SimpleData>
+				<SimpleData name="CODES">PSMCS</SimpleData>
+				<SimpleData name="SORTE"></SimpleData>
+				<SimpleData name="SORTE_ZUSA"></SimpleData>
+				<SimpleData name="BEGR_VAR_C">396</SimpleData>
+				<SimpleData name="BEGR_VAR">VARIANTE 4</SimpleData>
+				<SimpleData name="MENGE_HANF">0</SimpleData>
+				<SimpleData name="AUSPFLANZD"></SimpleData>
+				<SimpleData name="LN_ANTEIL"></SimpleData>
+				<SimpleData name="LAERCHENWI"></SimpleData>
+				<SimpleData name="FLAECHE_BE">0</SimpleData>
+				<SimpleData name="KEINE_BESC"></SimpleData>
+				<SimpleData name="FLAECHE_BR">0.7847</SimpleData>
+				<SimpleData name="FLAECHE_NE">0.7847</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:balloonVisibility>1</gx:balloonVisibility>
+		<Polygon>
+			<extrude>1</extrude>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						16.35601965209095,47.72722893725656,44.91432713158429 16.35623706301782,47.72726645143156,44.91410191636533 16.35626871547915,47.72722753496103,44.91410821676254 16.35630652909051,47.72714965051874,44.91414339654148 16.35631707622531,47.72711732031646,44.91416255198419 16.35645345494443,47.72698066603865,44.91416236758232 16.35678514136684,47.72702130321703,44.9138333722949 16.35753732696696,47.72710609606285,44.91309372801334 16.35785752766644,47.7271118268517,44.91280559357256 16.3579860752461,47.72713564372002,44.91267096158117 16.35801314038555,47.72716761696167,44.91261887084693 16.35770741713667,47.72738056877641,44.91270158719271 16.35776874235985,47.72740497994933,44.91262586973608 16.35768912491154,47.72747991054734,44.91263025440276 16.35764737209458,47.72746398936481,44.91268119029701 16.35754718470591,47.72745527437128,44.91277744248509 16.35736591103212,47.72745435994666,44.91293850447983 16.35722080527699,47.72755072732151,44.91298189479858 16.35712146144087,47.72769784536034,44.91294011380523 16.35707248593958,47.72780663588536,44.91288757137954 16.35692784461542,47.7277745066405,44.91304374020547 16.35637855307145,47.72758660518119,44.91369482595474 16.35596300667311,47.72747559631625,44.91415991820395 16.35592604992545,47.72744100091155,44.91422306280583 16.3558324500845,47.7273937555086,44.91434741020203 16.35601965209095,47.72722893725656,44.91432713158429 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>
