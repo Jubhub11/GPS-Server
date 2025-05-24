@@ -73,6 +73,7 @@ def clear_gps_data():
 @app.route("/api/save-field", methods=["POST"])
 def save_field():
     data = request.get_json()
+    print(data)
     if not data:
         return "Invalid data", 400
     
