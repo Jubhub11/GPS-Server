@@ -7,13 +7,10 @@
   <script src="https://unpkg.com/@tmcw/togeojson@5.8.1/dist/togeojson.umd.js"></script>
   <style>
     #map { 
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-}
+      position: absolute;
+      top: 0; bottom: 0; left: 0; right: 0;
+      z-index: 0;
+    }
     #reset-btn {
       margin: 10px;
       padding: 8px 16px;
@@ -27,7 +24,6 @@
       position: fixed;
       top: 80px;
       right: 10px;
-      left: auto;
       z-index: 1000;
       font-family: Arial, sans-serif;
       font-size: 14px;
@@ -55,17 +51,20 @@
       vertical-align: middle;
       border-radius: 50%;
     }
+    /* CSS: Richtig so, keine JS-Objekte */
     .field-normal {
-      fillColor: "#3388ff";
-      weight: 2;
-      opacity: 0.6;
-      fillOpacity: 0.2;
+      stroke: #3388ff;
+      stroke-width: 2;
+      stroke-opacity: 0.6;
+      fill: #3388ff;
+      fill-opacity: 0.2;
     }
     .field-highlighted {
-      fillColor: "#ff3333";
-      weight: 2;
-      opacity: 0.8;
-      fillOpacity: 0.4;
+      stroke: #ff3333;
+      stroke-width: 2;
+      stroke-opacity: 0.8;
+      fill: #ff3333;
+      fill-opacity: 0.4;
     }
   #task-panel {
     position: fixed;
@@ -173,7 +172,7 @@
   </style>
 </head>
 <body>
-  <div id="map" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 0;"></div>
+  <div id="map"></div>
   <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
 
 <div style="position: fixed; top: 10px; left: 740px; z-index: 1000; background: white; padding: 10px; border: 1px solid #ccc;">
@@ -222,6 +221,7 @@ const availableColors = [
     let isCreatingTask = false;
     let selectedFields = new Set();
 
+    const map = L.map('map').setView([47.7333, 16.300], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
@@ -733,14 +733,6 @@ async function loadStoredData() {
 }
 
 
-let map; // Globale Deklaration
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialisiere die Karte
-  map = L.map('map').setView([47.7333, 16.4000], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
 
   // Lade die Daten
   loadStoredData();
