@@ -168,6 +168,13 @@
 <body>
   <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
 
+<div style="position: fixed; top: 10px; left: 10px; z-index: 1000; background: white; padding: 10px; border: 1px solid #ccc;">
+  <label>
+    <input type="checkbox" id="auto-center" checked>
+    Automatisch zentrieren
+  </label>
+</div>
+
   <div id="file-input-container">
     <input type="file" id="kml-input" multiple accept=".kml" onchange="handleFileSelect(event)">
     <button onclick="loadSelectedFiles()">Felder laden</button>
@@ -254,15 +261,26 @@ const availableColors = [
       }
     }
 
-    function handleFieldClick(fieldId) {
-      if (isCreatingTask) {
-        selectedFields.add(fieldId);
-        fields[fieldId].layer.setStyle({
-          color: '#ff3333',
-          fillOpacity: 0.4
-        });
-      }
+function handleFieldClick(fieldId) {
+  if (isCreatingTask) {
+    const wasSelected = selectedFields.has(fieldId);
+    if (wasSelected) {
+      selectedFields.delete(fieldId);
+      fields[fieldId].layer.setStyle({
+        color: '#3388ff',
+        fillColor: '#3388ff',
+        fillOpacity: 0.2
+      });
+    } else {
+      selectedFields.add(fieldId);
+      fields[fieldId].layer.setStyle({
+        color: '#ff3333',
+        fillColor: '#ff3333',
+        fillOpacity: 0.4
+      });
     }
+  }
+}
 
     function createNewTask() {
       if (isCreatingTask) {
@@ -274,7 +292,7 @@ const availableColors = [
       }
     }
 
-function finishTaskCreation() {
+    function finishTaskCreation() {
   if (selectedFields.size === 0) {
     alert('Bitte wählen Sie mindestens ein Feld aus');
     return;
@@ -300,13 +318,17 @@ function finishTaskCreation() {
 
   tasks.push(task);
   
-  // Felder mit der Auftragsfarbe markieren
+  // Felder sofort mit der Auftragsfarbe markieren
   task.fields.forEach(field => {
-    fields[field.id].layer.setStyle({
-      color: taskColor,
-      fillColor: taskColor,
-      fillOpacity: 0.2
-    });
+    if (fields[field.id]) {
+      fields[field.id].layer.setStyle({
+        color: taskColor,
+        fillColor: taskColor,
+        weight: 2,
+        opacity: 0.6,
+        fillOpacity: 0.2
+      });
+    }
   });
 
   updateTaskPanel();
@@ -401,49 +423,52 @@ function finishTaskCreation() {
       }
     }
 
-    async function fetchGPSData() {
-      const res = await fetch('/api/gps');
-      const data = await res.json();
+async function fetchGPSData() {
+  const res = await fetch('/api/gps');
+  const data = await res.json();
 
-      markers.forEach(marker => map.removeLayer(marker));
-      markers = [];
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = [];
 
-      for (const id in polylines) {
-        map.removeLayer(polylines[id]);
-      }
-      polylines = {};
+  for (const id in polylines) {
+    map.removeLayer(polylines[id]);
+  }
+  polylines = {};
 
-      const deviceGroups = {};
-      data.forEach(d => {
-        if (!deviceGroups[d.device_id]) deviceGroups[d.device_id] = [];
-        deviceGroups[d.device_id].push(d);
-      });
+  const deviceGroups = {};
+  data.forEach(d => {
+    if (!deviceGroups[d.device_id]) deviceGroups[d.device_id] = [];
+    deviceGroups[d.device_id].push(d);
+  });
 
-      for (const id in deviceGroups) {
-        const color = getColor(id);
-        const points = deviceGroups[id];
-        const latlngs = points.map(p => [p.lat, p.lon]);
-        polylines[id] = L.polyline(latlngs, { color }).addTo(map);
+  for (const id in deviceGroups) {
+    const color = getColor(id);
+    const points = deviceGroups[id];
+    const latlngs = points.map(p => [p.lat, p.lon]);
+    polylines[id] = L.polyline(latlngs, { color }).addTo(map);
 
-        points.forEach(p => {
-          const marker = L.circleMarker([p.lat, p.lon], {
-            radius: 6,
-            fillColor: color,
-            color: color,
-            weight: 1,
-            fillOpacity: 0.8
-          }).bindPopup(`${id}<br>vor ${formatTimeAgo(p.timestamp)}`).addTo(map);
-          markers.push(marker);
-        });
-      }
+    points.forEach(p => {
+      const marker = L.circleMarker([p.lat, p.lon], {
+        radius: 6,
+        fillColor: color,
+        color: color,
+        weight: 1,
+        fillOpacity: 0.8
+      }).bindPopup(`${id}<br>vor ${formatTimeAgo(p.timestamp)}`).addTo(map);
+      markers.push(marker);
+    });
+  }
 
-      updateLegend();
+  updateLegend();
 
-      if (data.length > 0) {
-        const last = data[data.length - 1];
-        map.panTo([last.lat, last.lon]);
-      }
+  // Nur zentrieren wenn die Checkbox aktiviert ist
+  if (data.length > 0) {
+    const last = data[data.length - 1];
+    if (document.getElementById('auto-center').checked) {
+      map.panTo([last.lat, last.lon]);
     }
+  }
+}
 
     async function resetTrack() {
       const response = await fetch('/api/clear', {
@@ -489,71 +514,67 @@ function updateLoadedFieldsList() {
     dropdown.classList.toggle('show');
   }
 
-    async function loadSelectedFiles() {
-      if (selectedFiles.length === 0) {
-        alert('Bitte wählen Sie zuerst KML-Dateien aus.');
-        return;
-      }
+   async function loadSelectedFiles() {
+  if (selectedFiles.length === 0) {
+    alert('Bitte wählen Sie zuerst KML-Dateien aus.');
+    return;
+  }
 
-      for (const file of selectedFiles) {
-        try {
-          const kmlText = await file.text();
-          const parser = new DOMParser();
-          const kml = parser.parseFromString(kmlText, 'text/xml');
-          const geojson = toGeoJSON.kml(kml);
+  for (const file of selectedFiles) {
+    try {
+      const kmlText = await file.text();
+      const parser = new DOMParser();
+      const kml = parser.parseFromString(kmlText, 'text/xml');
+      const geojson = toGeoJSON.kml(kml);
 
-          // Extrahiere den Dateinamen ohne .kml Endung als Basis für die Field-IDs
-          const baseFileName = file.name.replace('.kml', '');
+      const baseFileName = file.name.replace('.kml', '');
 
-          geojson.features.forEach((feature, index) => {
-            // Verwende den Namen aus der KML-Datei oder generiere einen aus Dateiname + Index
-            const fieldId = feature.properties.name || `${baseFileName}-${index + 1}`;
-            
-            // Prüfe ob das Feld bereits existiert
-            if (fields[fieldId]) {
-              console.log(`Feld ${fieldId} existiert bereits und wird übersprungen`);
-              return;
-            }
-
-            const field = L.geoJSON(feature, {
-              style: {
-                color: '#3388ff',
-                weight: 2,
-                opacity: 0.6,
-                fillOpacity: 0.2
-              }
-            }).addTo(map);
-
-            field.on('click', () => handleFieldClick(fieldId));
-            
-            fields[fieldId] = {
-              layer: field,
-              status: 'normal',
-              name: fieldId,
-              fileName: file.name
-            };
-          });
-        } catch (error) {
-          console.error(`Error loading KML file ${file.name}:`, error);
-          alert(`Fehler beim Laden von ${file.name}: ${error.message}`);
+      geojson.features.forEach((feature, index) => {
+        const fieldId = feature.properties.name || `${baseFileName}-${index + 1}`;
+        
+        if (fields[fieldId]) {
+          console.log(`Feld ${fieldId} existiert bereits und wird übersprungen`);
+          return;
         }
-      }
 
-      // Zoom auf alle geladenen Felder
-      const fieldBounds = [];
-      Object.values(fields).forEach(field => {
-        fieldBounds.push(field.layer.getBounds());
+        const field = L.geoJSON(feature, {
+          style: {
+            color: '#3388ff',
+            fillColor: '#3388ff',
+            weight: 2,
+            opacity: 0.6,
+            fillOpacity: 0.2
+          }
+        }).addTo(map);
+
+        field.on('click', () => handleFieldClick(fieldId));
+        
+        fields[fieldId] = {
+          layer: field,
+          status: 'normal',
+          name: fieldId,
+          fileName: file.name
+        };
       });
-      
-      if (fieldBounds.length > 0) {
-        const bounds = L.latLngBounds(fieldBounds);
-        map.fitBounds(bounds);
-      }
-
-      updateLoadedFieldsList();
-    alert(`${Object.keys(fields).length} Felder wurden erfolgreich geladen.`);
-  
+    } catch (error) {
+      console.error(`Error loading KML file ${file.name}:`, error);
+      alert(`Fehler beim Laden von ${file.name}: ${error.message}`);
     }
+  }
+
+  const fieldBounds = [];
+  Object.values(fields).forEach(field => {
+    fieldBounds.push(field.layer.getBounds());
+  });
+  
+  if (fieldBounds.length > 0) {
+    const bounds = L.latLngBounds(fieldBounds);
+    map.fitBounds(bounds);
+  }
+
+  updateLoadedFieldsList();
+  alert(`${Object.keys(fields).length} Felder wurden erfolgreich geladen.`);
+}
 
   
 
