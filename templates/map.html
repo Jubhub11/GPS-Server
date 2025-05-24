@@ -534,7 +534,7 @@ function updateLoadedFieldsList() {
     map.fitBounds(bounds);
   }
 
-  await saveFieldsToServer();
+  await saveServer();
   updateLoadedFieldsList();
   alert(`${Object.keys(fields).length} Felder wurden erfolgreich geladen.`);
 }
@@ -658,13 +658,24 @@ function updateTaskLegend() {
 }
 
 async function saveFieldsToServer() {
+    const simplifiedFields = {};
+
+    for (const [fieldId, fieldData] of Object.entries(fields)) {
+        simplifiedFields[fieldId] = {
+            name: fieldData.name,
+            status: fieldData.status,
+            fileName: fieldData.fileName,
+            geojson: fieldData.geojson  // ← WICHTIG
+        };
+    }
+
     try {
         await fetch('/api/save-field', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(fields)
+            body: JSON.stringify(simplifiedFields)
         });
     } catch (error) {
         console.error('Error saving fields:', error);
