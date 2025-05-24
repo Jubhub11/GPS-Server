@@ -773,12 +773,13 @@ function applyTaskStyles() {
 
   // Lade die Daten
 
+(async function initializeApp() {
   await loadFields();
   await loadStoredData();
   applyTaskStyles();
   fetchGPSData();
   setInterval(fetchGPSData, 10000);
-
+})()
   </script>
 </body>
 </html>
