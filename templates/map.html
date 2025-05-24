@@ -240,7 +240,7 @@ const availableColors = [
     async function loadFields() {
       const kmlFiles = [
       ];
-
+    }
       async function loadServerKMLFiles() {
   const res = await fetch('/api/list-kml');
   const files = await res.json();
@@ -251,7 +251,7 @@ const availableColors = [
     const text = await res.text();
     // … KML zu GeoJSON, wie gehabt
   }
-}
+
 
 
       for (const kmlFile of kmlFiles) {
