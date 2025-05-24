@@ -205,8 +205,6 @@
     <div id="active-tasks"></div>
   </div>
 
-  <div id="map"></div>
-
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const taskColors = {};
@@ -214,7 +212,7 @@ const availableColors = [
   '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', 
   '#D4A5A5', '#9B59B6', '#3498DB', '#E67E22', '#2ECC71'
 ];
-    const map = L.map('map').setView([47.7333, 16.4000], 13);
+let map;
     let fields = {};
     let tasks = [];
     let markers = [];
@@ -583,44 +581,6 @@ function updateLoadedFieldsList() {
     updateTaskLegend();
   }
 
-  function updateTaskPanel() {
-    const taskContainer = document.getElementById('active-tasks');
-    taskContainer.innerHTML = '';
-
-    tasks.forEach(task => {
-      const completedFields = task.fields.filter(f => f.completed).length;
-      const totalFields = task.fields.length;
-      const progress = (completedFields / totalFields) * 100;
-
-      const taskElement = document.createElement('div');
-      taskElement.className = 'task-item';
-      taskElement.innerHTML = `
-        <h4>${task.name}</h4>
-        <div class="task-progress">
-          <div class="progress-bar" style="width: ${progress}%"></div>
-        </div>
-        <div>Fortschritt: ${completedFields}/${totalFields} Felder</div>
-        <div class="field-list">
-          ${task.fields.map(field => `
-            <div class="field-item">
-              <input type="checkbox" 
-                ${field.completed ? 'checked' : ''} 
-                onchange="toggleFieldCompletion('${task.id}', '${field.id}')"
-              >
-              <span>${field.id}</span>
-            </div>
-          `).join('')}
-        </div>
-        <div class="task-buttons">
-          ${task.fields.every(f => f.completed) ? 
-            `<button onclick="deleteTask('${task.id}')">Auftrag löschen</button>` :
-            ''
-          }
-        </div>
-      `;
-      taskContainer.appendChild(taskElement);
-    });
-  }
 
 function toggleFieldCompletion(taskId, fieldId) {
   const task = tasks.find(t => t.id === taskId);
@@ -768,8 +728,11 @@ async function loadStoredData() {
 }
 
 
-    // Initial laden
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', function() {
+  map = L.map('map').setView([47.7333, 16.4000], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
     loadStoredData();
     loadFields();
     fetchGPSData();
