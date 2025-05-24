@@ -454,7 +454,15 @@ async function fetchGPSData() {
       selectedFiles = Array.from(event.target.files);
       updateFileList();
     }
-
+function updateFileList() {
+  const list = document.getElementById('selected-files');
+  list.innerHTML = '';
+  selectedFiles.forEach(file => {
+    const div = document.createElement('div');
+    div.textContent = file.name;
+    list.appendChild(div);
+  });
+}
 function updateLoadedFieldsList() {
     const dropdown = document.getElementById('fields-dropdown');
     dropdown.innerHTML = '';
@@ -657,30 +665,7 @@ function updateTaskLegend() {
   return taskColors[taskId];
 }
 
-async function saveFieldsToServer() {
-    const simplifiedFields = {};
 
-    for (const [fieldId, fieldData] of Object.entries(fields)) {
-        simplifiedFields[fieldId] = {
-            name: fieldData.name,
-            status: fieldData.status,
-            fileName: fieldData.fileName,
-            geojson: fieldData.geojson  // ← WICHTIG
-        };
-    }
-
-    try {
-        await fetch('/api/save-field', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(simplifiedFields)
-        });
-    } catch (error) {
-        console.error('Error saving fields:', error);
-    }
-}
 
 async function saveTasksToServer() {
     try {
