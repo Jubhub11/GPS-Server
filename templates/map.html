@@ -701,68 +701,71 @@ async function saveTasksToServer() {
 }
 
 async function loadStoredData() {
-    try {
-        const response = await fetch('/api/get-stored-data');
-        const data = await response.json();
-        
-        // Lade gespeicherte Felder
-        for (const [fieldId, fieldData] of Object.entries(data.fields)) {
-            const field = L.geoJSON(fieldData.geojson, {
-                style: {
-                    color: fieldData.color || '#3388ff',
-                    fillColor: fieldData.color || '#3388ff',
-                    weight: 2,
-                    opacity: 0.6,
-                    fillOpacity: 0.2
-                }
-            }).addTo(map);
+  try {
+    const response = await fetch('/api/get-stored-data');
+    const data = await response.json();
 
-            field.on('click', () => handleFieldClick(fieldId));
-            
-            fields[fieldId] = {
-                layer: field,
-                status: fieldData.status,
-                name: fieldData.name,
-                fileName: fieldData.fileName
-            };
+    // Felder zuerst laden
+    for (const [fieldId, fieldData] of Object.entries(data.fields)) {
+      const field = L.geoJSON(fieldData.geojson, {
+        style: {
+          color: fieldData.color || '#3388ff',
+          fillColor: fieldData.color || '#3388ff',
+          weight: 2,
+          opacity: 0.6,
+          fillOpacity: 0.2
         }
+      }).addTo(map);
 
-        tasks.forEach(task => {
-  task.fields.forEach(field => {
-    const fieldId = field.id;
-    const isCompleted = field.completed;
+      field.on('click', () => handleFieldClick(fieldId));
 
-    if (fields[fieldId]) {
-      fields[fieldId].layer.setStyle({
-        color: task.color,
-        fillColor: task.color,
-        weight: 2,
-        opacity: 0.6,
-        fillOpacity: isCompleted ? 0.4 : 0.2
+      fields[fieldId] = {
+        layer: field,
+        status: fieldData.status,
+        name: fieldData.name,
+        fileName: fieldData.fileName
+      };
+    }
+
+    // Jetzt Aufträge setzen
+    tasks = data.tasks;
+
+    // Und erst jetzt Farben zuweisen
+    tasks.forEach(task => {
+      task.fields.forEach(field => {
+        const fieldId = field.id;
+        const isCompleted = field.completed;
+
+        if (fields[fieldId]) {
+          fields[fieldId].layer.setStyle({
+            color: task.color,
+            fillColor: task.color,
+            weight: 2,
+            opacity: 0.6,
+            fillOpacity: isCompleted ? 0.4 : 0.2
+          });
+        }
       });
-    }
-  });
-});
+    });
 
-        // Lade gespeicherte Aufträge
-        tasks = data.tasks;
-        updateTaskPanel();
-        updateTaskLegend();
+    updateTaskPanel();
+    updateTaskLegend();
 
-        // Zoom auf alle geladenen Felder
-        const fieldBounds = [];
-        Object.values(fields).forEach(field => {
-            fieldBounds.push(field.layer.getBounds());
-        });
-        
-        if (fieldBounds.length > 0) {
-            const bounds = L.latLngBounds(fieldBounds);
-            map.fitBounds(bounds);
-        }
-    } catch (error) {
-        console.error('Error loading stored data:', error);
+    // Zoom auf alle geladenen Felder
+    const fieldBounds = [];
+    Object.values(fields).forEach(field => {
+      fieldBounds.push(field.layer.getBounds());
+    });
+
+    if (fieldBounds.length > 0) {
+      const bounds = L.latLngBounds(fieldBounds);
+      map.fitBounds(bounds);
     }
+  } catch (error) {
+    console.error('Error loading stored data:', error);
+  }
 }
+
 
 
 
@@ -770,8 +773,6 @@ async function loadStoredData() {
   loadStoredData();
   loadFields();
   fetchGPSData();
-  updateTaskPanel();
-updateTaskLegend();
   setInterval(fetchGPSData, 10000);
   </script>
 </body>
