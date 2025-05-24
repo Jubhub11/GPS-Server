@@ -47,7 +47,7 @@
       vertical-align: middle;
       border-radius: 50%;
     }
-    /* CSS: Richtig so, keine JS-Objekte */
+  
     .field-normal {
       stroke: #3388ff;
       stroke-width: 2;
@@ -169,7 +169,7 @@
   #reset-btn {
   position: fixed;
   top: 10px;
-  left: 30px;
+  left: 50px;
   z-index: 1001;
   background: white;
   border: 1px solid #ccc;
@@ -191,12 +191,13 @@
   </label>
 </div>
 
+<!--
   <div id="file-input-container">
     <input type="file" id="kml-input" multiple accept=".kml" onchange="handleFileSelect(event)">
     <button onclick="loadSelectedFiles()">Felder laden</button>
     <div class="file-list" id="selected-files"></div>
   </div>
-
+//-->
 <div id="loaded-fields-container">
   <button onclick="toggleFieldsDropdown()">Geladene Felder ▼</button>
   <div id="fields-dropdown" class="fields-dropdown"></div>
@@ -230,7 +231,7 @@ const availableColors = [
     let isCreatingTask = false;
     let selectedFields = new Set();
 
-    const map = L.map('map').setView([47.7333, 16.300], 13);
+    const map = L.map('map').setView([47.7381, 16.3969], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
@@ -240,7 +241,6 @@ const availableColors = [
       const kmlFiles = [
         '/static/fields/area1.kml',
         '/static/fields/area2.kml'
-        // ... weitere KML-Dateien
       ];
 
       for (const kmlFile of kmlFiles) {
