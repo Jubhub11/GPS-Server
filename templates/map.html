@@ -212,8 +212,7 @@ const availableColors = [
   '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', 
   '#D4A5A5', '#9B59B6', '#3498DB', '#E67E22', '#2ECC71'
 ];
-let map;
-    map = L.map('map').setView([47.7333, 16.4000], 13);
+
     let fields = {};
     let tasks = [];
     let markers = [];
@@ -544,63 +543,68 @@ function updateLoadedFieldsList() {
 
   function finishTaskCreation() {
     if (selectedFields.size === 0) {
-      alert('Bitte wählen Sie mindestens ein Feld aus');
-      return;
+        alert('Bitte wählen Sie mindestens ein Feld aus');
+        return;
     }
 
     const taskName = prompt('Bitte geben Sie einen Namen für den Auftrag ein:', `Auftrag ${tasks.length + 1}`);
     if (!taskName) return;
 
     const taskId = `task-${Date.now()}`;
+    const taskColor = getTaskColor(taskId);
+    
     const task = {
-      id: taskId,
-      name: taskName,
-      fields: Array.from(selectedFields).map(fieldId => ({
-        id: fieldId,
-        completed: false
-      })),
-      status: 'in_progress',
-      createdAt: new Date().toISOString()
+        id: taskId,
+        name: taskName,
+        color: taskColor,
+        fields: Array.from(selectedFields).map(fieldId => ({
+            id: fieldId,
+            completed: false
+        })),
+        status: 'in_progress',
+        createdAt: new Date().toISOString()
     };
 
-    tasks.push(task);
+    tasks.push(task); // Nur einmal hinzufügen!
+    
+    // Felder sofort mit der Auftragsfarbe markieren
+    task.fields.forEach(field => {
+        if (fields[field.id]) {
+            fields[field.id].layer.setStyle({
+                color: taskColor,
+                fillColor: taskColor,
+                weight: 2,
+                opacity: 0.6,
+                fillOpacity: 0.2
+            });
+        }
+    });
+
+    saveTasksToServer();
     updateTaskPanel();
+    updateTaskLegend();
     
     isCreatingTask = false;
     selectedFields.clear();
-    
-    // Reset field styles
-    Object.keys(fields).forEach(fieldId => {
-      fields[fieldId].layer.setStyle({
-        color: '#3388ff',
-        fillOpacity: 0.2
-      });
-    });
-    tasks.push(task);
-    saveTasksToServer(); // Speichere Aufträge
-    updateTaskPanel();
-    updateTaskLegend();
-  }
-
+}
 
 function toggleFieldCompletion(taskId, fieldId) {
-  const task = tasks.find(t => t.id === taskId);
-  if (task) {
-    const field = task.fields.find(f => f.id === fieldId);
-    if (field) {
-      field.completed = !field.completed;
-      
-      fields[fieldId].layer.setStyle({
-        color: task.color,
-        fillColor: task.color,
-        fillOpacity: field.completed ? 0.4 : 0.2
-      });
-      
-      updateTaskPanel();
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+        const field = task.fields.find(f => f.id === fieldId);
+        if (field) {
+            field.completed = !field.completed;
+            
+            fields[fieldId].layer.setStyle({
+                color: task.color,
+                fillColor: task.color,
+                fillOpacity: field.completed ? 0.4 : 0.2
+            });
+            
+            updateTaskPanel();
+            saveTasksToServer();
+        }
     }
-  }
-  updateTaskPanel();
-    saveTasksToServer(); // Speichere Aufträge nach Änderungen
 }
 function deleteTask(taskId) {
   if (!confirm('Möchten Sie diesen Auftrag wirklich löschen?')) return;
@@ -729,15 +733,20 @@ async function loadStoredData() {
 }
 
 
+let map; // Globale Deklaration
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialisiere die Karte
   map = L.map('map').setView([47.7333, 16.4000], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
-    loadStoredData();
-    loadFields();
-    fetchGPSData();
-    setInterval(fetchGPSData, 10000);
+
+  // Lade die Daten
+  loadStoredData();
+  loadFields();
+  fetchGPSData();
+  setInterval(fetchGPSData, 10000);
   </script>
 </body>
 </html>
