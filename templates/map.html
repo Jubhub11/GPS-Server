@@ -134,7 +134,7 @@
    #loaded-fields-container {
     position: fixed;
     top: 10px;
-    left: 580px;
+    left: 575px;
     z-index: 1000;
     background: white;
     padding: 10px;
@@ -168,7 +168,7 @@
 <body>
   <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
 
-<div style="position: fixed; top: 10px; left: 550px; z-index: 1000; background: white; padding: 10px; border: 1px solid #ccc;">
+<div style="position: fixed; top: 10px; left: 700px; z-index: 1000; background: white; padding: 10px; border: 1px solid #ccc;">
   <label>
     <input type="checkbox" id="auto-center" checked>
     Automatisch zentrieren
@@ -560,6 +560,9 @@ function updateLoadedFieldsList() {
       console.error(`Error loading KML file ${file.name}:`, error);
       alert(`Fehler beim Laden von ${file.name}: ${error.message}`);
     }
+        await saveFieldsToServer();
+    updateLoadedFieldsList();
+    alert(`${Object.keys(fields).length} Felder wurden erfolgreich geladen.`);
   }
 
   const fieldBounds = [];
@@ -612,6 +615,10 @@ function updateLoadedFieldsList() {
         fillOpacity: 0.2
       });
     });
+    tasks.push(task);
+    saveTasksToServer(); // Speichere Aufträge
+    updateTaskPanel();
+    updateTaskLegend();
   }
 
   function updateTaskPanel() {
@@ -669,6 +676,8 @@ function toggleFieldCompletion(taskId, fieldId) {
       updateTaskPanel();
     }
   }
+  updateTaskPanel();
+    saveTasksToServer(); // Speichere Aufträge nach Änderungen
 }
 function deleteTask(taskId) {
   if (!confirm('Möchten Sie diesen Auftrag wirklich löschen?')) return;
@@ -691,6 +700,10 @@ function deleteTask(taskId) {
     updateTaskPanel();
     updateTaskLegend();
   }
+  tasks.splice(taskIndex, 1);
+    saveTasksToServer(); // Speichere Aufträge nach dem Löschen
+    updateTaskPanel();
+    updateTaskLegend();
 }
 function updateTaskLegend() {
   const legendList = document.getElementById('legend-list');
@@ -718,7 +731,85 @@ function updateTaskLegend() {
   return taskColors[taskId];
 }
 
+async function saveFieldsToServer() {
+    try {
+        await fetch('/api/save-field', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(fields)
+        });
+    } catch (error) {
+        console.error('Error saving fields:', error);
+    }
+}
+
+async function saveTasksToServer() {
+    try {
+        await fetch('/api/save-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(tasks)
+        });
+    } catch (error) {
+        console.error('Error saving tasks:', error);
+    }
+}
+
+async function loadStoredData() {
+    try {
+        const response = await fetch('/api/get-stored-data');
+        const data = await response.json();
+        
+        // Lade gespeicherte Felder
+        for (const [fieldId, fieldData] of Object.entries(data.fields)) {
+            const field = L.geoJSON(fieldData.geojson, {
+                style: {
+                    color: fieldData.color || '#3388ff',
+                    fillColor: fieldData.color || '#3388ff',
+                    weight: 2,
+                    opacity: 0.6,
+                    fillOpacity: 0.2
+                }
+            }).addTo(map);
+
+            field.on('click', () => handleFieldClick(fieldId));
+            
+            fields[fieldId] = {
+                layer: field,
+                status: fieldData.status,
+                name: fieldData.name,
+                fileName: fieldData.fileName
+            };
+        }
+
+        // Lade gespeicherte Aufträge
+        tasks = data.tasks;
+        updateTaskPanel();
+        updateTaskLegend();
+
+        // Zoom auf alle geladenen Felder
+        const fieldBounds = [];
+        Object.values(fields).forEach(field => {
+            fieldBounds.push(field.layer.getBounds());
+        });
+        
+        if (fieldBounds.length > 0) {
+            const bounds = L.latLngBounds(fieldBounds);
+            map.fitBounds(bounds);
+        }
+    } catch (error) {
+        console.error('Error loading stored data:', error);
+    }
+}
+
+
     // Initial laden
+window.onload = function() {
+    loadStoredData();
     loadFields();
     fetchGPSData();
     setInterval(fetchGPSData, 10000);

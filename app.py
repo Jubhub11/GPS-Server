@@ -1,9 +1,30 @@
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime
+import json
+import os
 
 app = Flask(__name__)
 
 gps_data = []  # Liste zum Speichern der GPS-Punkte
+DATA_FILE = 'stored_data.json'
+
+# Lade gespeicherte Daten beim Start
+def load_stored_data():
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, 'r') as f:
+                return json.load(f)
+        except:
+            return {'fields': {}, 'tasks': []}
+    return {'fields': {}, 'tasks': []}
+
+# Speichere Daten in JSON-Datei
+def save_stored_data(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f)
+
+# Initialisiere gespeicherte Daten
+stored_data = load_stored_data()
 
 @app.route("/")
 def index():
@@ -48,3 +69,27 @@ def clear_gps_data():
         return "Unauthorized", 403
     gps_data.clear()
     return "Cleared", 200
+
+@app.route("/api/save-field", methods=["POST"])
+def save_field():
+    data = request.get_json()
+    if not data:
+        return "Invalid data", 400
+    
+    stored_data['fields'].update(data)
+    save_stored_data(stored_data)
+    return "OK", 200
+
+@app.route("/api/save-task", methods=["POST"])
+def save_task():
+    data = request.get_json()
+    if not data:
+        return "Invalid data", 400
+    
+    stored_data['tasks'] = data
+    save_stored_data(stored_data)
+    return "OK", 200
+
+@app.route("/api/get-stored-data")
+def get_stored_data():
+    return jsonify(stored_data)
