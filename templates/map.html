@@ -239,9 +239,20 @@ const availableColors = [
     // KML Dateien laden
     async function loadFields() {
       const kmlFiles = [
-        '/static/fields/area1.kml',
-        '/static/fields/area2.kml'
       ];
+
+      async function loadServerKMLFiles() {
+  const res = await fetch('/api/list-kml');
+  const files = await res.json();
+
+  for (const file of files) {
+    const url = `/static/fields/${file}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    // … KML zu GeoJSON, wie gehabt
+  }
+}
+
 
       for (const kmlFile of kmlFiles) {
         try {

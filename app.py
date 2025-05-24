@@ -94,3 +94,9 @@ def save_task():
 @app.route("/api/get-stored-data")
 def get_stored_data():
     return jsonify(stored_data)
+
+@app.route('/api/list-kml')
+def list_kml_files():
+    kml_dir = os.path.join(app.static_folder, 'fields')
+    files = [f for f in os.listdir(kml_dir) if f.endswith('.kml')]
+    return jsonify(files)
