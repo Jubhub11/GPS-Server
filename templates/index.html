@@ -1,0 +1,15 @@
+// main.js
+import { initMap } from './map.js';
+import { loadFields, updateFieldList } from './fields.js';
+import { initTaskPanel, loadTasks, applyTaskStyles } from './tasks.js';
+import { fetchGPSData, startGPSTracking } from './gps.js';
+
+(async function initializeApp() {
+  initMap();
+  await loadFields();
+  await loadTasks();
+  applyTaskStyles();
+  updateFieldList();
+  fetchGPSData();
+  startGPSTracking();
+})();
