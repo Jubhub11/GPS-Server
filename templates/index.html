@@ -1,15 +1,15 @@
-// main.js
-import { initMap } from './map.js';
-import { loadFields, updateFieldList } from './fields.js';
-import { initTaskPanel, loadTasks, applyTaskStyles } from './tasks.js';
-import { fetchGPSData, startGPSTracking } from './gps.js';
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>GPS Tracker – Übersicht</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+<body>
+  <h1>Willkommen beim GPS Tracker</h1>
+  <p><a href="/map">Karte anzeigen</a></p>
 
-(async function initializeApp() {
-  initMap();
-  await loadFields();
-  await loadTasks();
-  applyTaskStyles();
-  updateFieldList();
-  fetchGPSData();
-  startGPSTracking();
-})();
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

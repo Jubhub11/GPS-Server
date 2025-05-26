@@ -103,3 +103,7 @@ def list_kml_files():
         return jsonify(files)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+        
+@app.route("/map")
+def map_view():
+    return render_template("map.html")
