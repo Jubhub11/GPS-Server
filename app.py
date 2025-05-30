@@ -28,7 +28,7 @@ stored_data = load_stored_data()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("map.html", points=gps_data)
 
 @app.route("/gps", methods=["POST"])
 def receive_gps():
@@ -103,7 +103,3 @@ def list_kml_files():
         return jsonify(files)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-        
-@app.route("/map")
-def map_view():
-    return render_template("map.html")
