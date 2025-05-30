@@ -107,3 +107,19 @@ def list_kml_files():
         return jsonify(files)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+        
+def delete_km_entries(entry_id=None):
+    try:
+        if entry_id:
+            # Einzelnen Eintrag löschen
+            response = requests.delete(f'/api/list-km/{entry_id}')
+        else:
+            # Alle Einträge löschen
+            response = requests.delete('/api/list-km/all')
+            
+        if response.status_code == 200:
+            return True
+        return False
+    except Exception as e:
+        print(f"Fehler beim Löschen: {str(e)}")
+        return False
