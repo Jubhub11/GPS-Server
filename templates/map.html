@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GPS Tracker</title>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="/static/css/styles.css" />
-  <script src="https://unpkg.com/@tmcw/togeojson@5.8.1/dist/togeojson.umd.js"></script>
+    <title>GPS Tracker</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <script src="https://unpkg.com/@tmcw/togeojson@5.8.1/dist/togeojson.umd.js"></script>
 </head>
 <body>
-  <div id="map"></div>
-  <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
+    <div id="map"></div>
+    <button id="reset-btn" onclick="resetTrack()">Reset Track</button>
 
-  <div id="auto-center-container">
-    <label>
-      <input type="checkbox" id="auto-center" checked>
-      Automatisch zentrieren
-    </label>
-  </div>
+    <div id="auto-center-container">
+        <label>
+            <input type="checkbox" id="auto-center" checked>
+            Automatisch zentrieren
+        </label>
+    </div>
 
-  <div id="loaded-fields-container">
-    <button onclick="toggleFieldsDropdown()">Geladene Felder ▼</button>
-    <div id="fields-dropdown" class="fields-dropdown"></div>
-  </div>
+    <div id="loaded-fields-container">
+        <button onclick="toggleFieldsDropdown()">Geladene Felder ▼</button>
+        <div id="fields-dropdown" class="fields-dropdown"></div>
+    </div>
 
-  <div id="legend">
-    <h4>Geräte-Legende</h4>
-    <ul id="legend-list"></ul>
-  </div>
+    <div id="legend">
+        <h4>Geräte-Legende</h4>
+        <ul id="legend-list"></ul>
+    </div>
 
-  <div id="task-panel">
-    <h4>Aufträge</h4>
-    <button onclick="createNewTask()">Neuer Auftrag</button>
-    <div id="active-tasks"></div>
-  </div>
+    <div id="task-panel">
+        <h4>Aufträge</h4>
+        <button onclick="createNewTask()">Neuer Auftrag</button>
+        <div id="active-tasks"></div>
+    </div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="/static/js/map.js"></script>
-  <script src="/static/js/tasks.js"></script>
-  <script src="/static/js/fields.js"></script>
-  <script src="/static/js/legend.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Wichtig: Reihenfolge der Scripts beachten -->
+    <script src="{{ url_for('static', filename='js/fields.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/legend.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 </body>
 </html>

@@ -1,12 +1,16 @@
-from flask import Flask, request, jsonify, render_template
-from datetime import datetime
-import json
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 gps_data = []  # Liste zum Speichern der GPS-Punkte
 DATA_FILE = 'stored_data.json'
+
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
+
 
 # Lade gespeicherte Daten beim Start
 def load_stored_data():

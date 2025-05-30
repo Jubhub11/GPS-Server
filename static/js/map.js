@@ -4,28 +4,101 @@ let polylines = {};
 
 // Map initialization
 function initMap() {
-  map = L.map('map').setView([47.7381, 16.3969], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
+    map = L.map('map', {
+        center: [47.7381, 16.3969],
+        zoom: 13
+    });
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 }
 
 // GPS data fetching
 async function fetchGPSData() {
-  // GPS data fetching code...
+    try {
+        const res = await fetch('/api/gps');
+        const data = await res.json();
+
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+
+        for (const id in polylines) {
+            map.removeLayer(polylines[id]);
+        }
+        polylines = {};
+
+        const deviceGroups = {};
+        data.forEach(d => {
+            if (!deviceGroups[d.device_id]) deviceGroups[d.device_id] = [];
+            deviceGroups[d.device_id].push(d);
+        });
+
+        for (const id in deviceGroups) {
+            const color = getColor(id);
+            const points = deviceGroups[id];
+            const latlngs = points.map(p => [p.lat, p.lon]);
+            polylines[id] = L.polyline(latlngs, { color }).addTo(map);
+
+            points.forEach(p => {
+                const marker = L.circleMarker([p.lat, p.lon], {
+                    radius: 6,
+                    fillColor: color,
+                    color: color,
+                    weight: 1,
+                    fillOpacity: 0.8
+                }).bindPopup(`${id}<br>vor ${formatTimeAgo(p.timestamp)}`).addTo(map);
+                markers.push(marker);
+            });
+        }
+
+        updateLegend();
+
+        if (data.length > 0) {
+            const last = data[data.length - 1];
+            if (document.getElementById('auto-center').checked) {
+                map.panTo([last.lat, last.lon]);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching GPS data:', error);
+    }
 }
 
 // Reset track
 async function resetTrack() {
-  // Reset track code...
+    try {
+        const response = await fetch('/api/clear', {
+            method: 'POST',
+            headers: { 'Authorization': 'tQJxIjDs440Q' }
+        });
+
+        if (response.ok) {
+            for (const id in polylines) map.removeLayer(polylines[id]);
+            polylines = {};
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+            alert("GPS-Daten wurden gelöscht.");
+        } else {
+            alert("Fehler beim Löschen der Daten vom Server.");
+        }
+    } catch (error) {
+        console.error('Error resetting track:', error);
+    }
 }
 
 // Initialize
-(async function() {
-  initMap();
-  await loadFields();
-  await loadStoredData();
-  applyTaskStyles();
-  fetchGPSData();
-  setInterval(fetchGPSData, 10000);
-})();
+document.addEventListener('DOMContentLoaded', async function() {
+    initMap();
+    if (typeof loadFields === 'function') {
+        await loadFields();
+    }
+    if (typeof loadStoredData === 'function') {
+        await loadStoredData();
+    }
+    if (typeof applyTaskStyles === 'function') {
+        applyTaskStyles();
+    }
+    fetchGPSData();
+    setInterval(fetchGPSData, 10000);
+});
