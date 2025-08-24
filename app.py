@@ -25,8 +25,8 @@ def init_db():
         CREATE TABLE IF NOT EXISTS fields (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            filepath TEXT,    
-            ftype TEXT         
+            filepath TEXT,
+            ftype TEXT
         )
     """)
     c.execute("""
