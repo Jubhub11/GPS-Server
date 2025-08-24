@@ -35,7 +35,7 @@ def init_db():
             device_id TEXT,
             lat REAL,
             lon REAL,
-            timestamp TEXT     
+            timestamp TEXT
         )
     """)
     c.execute("""
