@@ -189,8 +189,9 @@ def trackers_latest():
     return jsonify([{"device_id": r[0], "lat": r[1], "lon": r[2], "timestamp": r[3]} for r in rows])
 
 
-if __name__ == "__main__":
     os.makedirs(FIELDS_DIR, exist_ok=True)
     init_db()
     import_fields()
+
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
