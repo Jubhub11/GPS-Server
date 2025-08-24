@@ -3,7 +3,8 @@ import sqlite3, os, glob
 from flask_cors import CORS
 from datetime import datetime
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__)
+
 CORS(app)
 
 DB_FILE = "database.db"
@@ -79,10 +80,10 @@ def import_fields():
     conn.close()
 
 
+
 @app.route("/")
 def index():
-    return send_from_directory("static", "index.html")
-
+    return render_template("index.html")
 
 # ---------- Felder ----------
 @app.route("/api/fields", methods=["GET"])
