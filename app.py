@@ -25,8 +25,8 @@ def init_db():
         CREATE TABLE IF NOT EXISTS fields (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            filepath TEXT,     -- relativer Pfad in /fields
-            ftype TEXT         -- 'kml' oder 'shpzip'
+            filepath TEXT,    
+            ftype TEXT         
         )
     """)
     c.execute("""
@@ -35,7 +35,7 @@ def init_db():
             device_id TEXT,
             lat REAL,
             lon REAL,
-            timestamp TEXT      -- beliebiges Zeitformat wie vom Gerät geliefert
+            timestamp TEXT     
         )
     """)
     c.execute("""
