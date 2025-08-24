@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, render_template
 import sqlite3, os, glob
 from flask_cors import CORS
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
 CORS(app)
 
@@ -78,7 +78,6 @@ def import_fields():
 
     conn.commit()
     conn.close()
-
 
 
 @app.route("/")
