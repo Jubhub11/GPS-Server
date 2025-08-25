@@ -110,14 +110,10 @@ window.toggleDarkMode = function() {
     const btn = document.getElementById("darkmode-btn");
     document.body.classList.toggle("dark-mode");
 
-    if (document.body.classList.contains("🌙 Nacht")) {
+    if (document.body.classList.contains("dark-mode")) {
         btn.textContent = "☀️ Tag";
-        map.removeLayer(lightTile);
-        darkTile.addTo(map);
     } else {
         btn.textContent = "🌙 Nacht";
-        map.removeLayer(darkTile);
-        lightTile.addTo(map);
     }
 }
 
