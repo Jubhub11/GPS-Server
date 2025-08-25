@@ -65,6 +65,21 @@ async function fetchGPSData() {
     }
 }
 
+async function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    const btn = document.getElementById("darkmode-btn");
+
+    if (document.body.classList.contains("dark-mode")) {
+        btn.textContent = "☀️ Tag";
+        map.removeLayer(lightTile);
+        darkTile.addTo(map);
+    } else {
+        btn.textContent = "🌙 Nacht";
+        map.removeLayer(darkTile);
+        lightTile.addTo(map);
+    }
+}
+
 // Reset track
 async function resetTrack() {
     try {

@@ -22,7 +22,7 @@
                 </label>
             </div>
             <button id="reset-btn" class="header-btn" onclick="resetTrack()">🔄 Reset Track</button>
-            <button id="darkmode-btn" class="header-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+            <button id="darkmode-btn" class="header-btn" onclick="toggleDarkMode()">☀️ Tag</button>
         </div>
     </div>
 
@@ -70,21 +70,7 @@ window.toggleFieldsDropdown = function() {
     dropdown.classList.toggle('show');
 }
 
-// Dark Mode
-window.toggleDarkMode = function() {
-    document.body.classList.toggle("dark-mode");
-    const btn = document.getElementById("darkmode-btn");
 
-    if (document.body.classList.contains("dark-mode")) {
-        btn.textContent = "☀️ Tag";
-        map.removeLayer(lightTile);
-        darkTile.addTo(map);
-    } else {
-        btn.textContent = "🌙 Nacht";
-        map.removeLayer(darkTile);
-        lightTile.addTo(map);
-    }
-}
 </script>
 
 </body>
