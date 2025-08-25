@@ -23,8 +23,11 @@ function createNewTask() {
 
 // Beendet die Aufgabenerstellung und speichert den neuen Auftrag
 function finishTaskCreation() {
+  const btn = document.getElementById("new-task-btn");
+
   if (selectedFields.size === 0) {
     alert('Auftrag erstellen abgebrochen: Keine Felder ausgewählt.');
+    btn.textContent = "➕ Neuer Auftrag";
     isCreatingTask = false;
     return;
   }
@@ -64,7 +67,7 @@ function finishTaskCreation() {
   saveTasksToServer();
   updateTaskPanel();
   updateTaskLegend();
-  
+  btn.textContent = "➕ Neuer Auftrag";
   isCreatingTask = false;
   selectedFields.clear();
 }
