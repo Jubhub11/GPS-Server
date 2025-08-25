@@ -27,6 +27,19 @@ html, body {
 }
 .header-buttons { display: flex; align-items: center; gap: 12px; }
 
+/* Buttons Light-Mode schwarz */
+.header-btn {
+    background: rgba(255,255,255,0.7);
+    color: black;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 6px 14px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.header-btn:hover { background: rgba(255,255,255,0.9); }
+
 /* Map */
 #map { 
     position: absolute;
@@ -54,25 +67,8 @@ html, body {
     display: none;
     z-index: 2100;
 }
-.fields-dropdown.show { display: block; }
 
-/* Buttons */
-button, .btn {
-    background: rgba(255,255,255,0.15);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 14px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-button:hover, .btn:hover { background: rgba(255,255,255,0.3); }
-
-/* Checkbox Label */
-#auto-center-container label { display: flex; align-items: center; gap: 6px; }
-
-/* Task Panel links, etwas unter Zoom */
+/* Task Panel links */
 #task-panel {
     position: fixed;
     top: 120px;
@@ -108,13 +104,13 @@ body.dark-mode {
     color: #ddd;
 }
 body.dark-mode #main-header { background: linear-gradient(90deg, #2E7D32 60%, #1B5E20 100%); }
+body.dark-mode .header-btn { background: #555; color: white; }
+body.dark-mode .header-btn:hover { background: #777; }
 body.dark-mode #legend, body.dark-mode #task-panel, body.dark-mode .fields-dropdown {
     background: #2a2a2a;
     border: 1px solid #444;
     color: #ddd;
 }
-body.dark-mode button, body.dark-mode .btn { background: #555; color: #fff; }
-body.dark-mode button:hover { background: #777; }
 
 /* Scrollbars */
 ::-webkit-scrollbar { width: 8px; background: #f0f0f0; }
