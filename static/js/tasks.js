@@ -16,13 +16,15 @@ function createNewTask() {
     isCreatingTask = true;
     selectedFields.clear();
     alert('Bitte wählen Sie die Felder für den neuen Auftrag aus');
+    btn.textContent = "📝 Auftrag erstellen";
   }
 }
 
 // Beendet die Aufgabenerstellung und speichert den neuen Auftrag
 function finishTaskCreation() {
   if (selectedFields.size === 0) {
-    alert('Bitte wählen Sie mindestens ein Feld aus');
+    alert('Auftrag erstellen abgebrochen: Keine Felder ausgewählt.');
+    isCreatingTask = false;
     return;
   }
 
