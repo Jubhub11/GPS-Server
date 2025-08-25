@@ -5,9 +5,10 @@ const availableColors = [
 ];
 
 let tasks = [];
-let isCreatingTask = false;
+let isCreatingTask = false; //Modus zur Aufgabenerstellung
 let selectedFields = new Set();
 
+// Startet die Erstellung eines neuen Auftrags
 function createNewTask() {
   if (isCreatingTask) {
     finishTaskCreation();
@@ -18,6 +19,7 @@ function createNewTask() {
   }
 }
 
+// Beendet die Aufgabenerstellung und speichert den neuen Auftrag
 function finishTaskCreation() {
   if (selectedFields.size === 0) {
     alert('Bitte wählen Sie mindestens ein Feld aus');
@@ -25,8 +27,8 @@ function finishTaskCreation() {
   }
 
   const taskName = prompt('Bitte geben Sie einen Namen für den Auftrag ein:', `Auftrag ${tasks.length + 1}`);
-  if (!taskName) return;
-
+  if (!taskName) { isCreatingTask = false; return; }
+  
   const taskId = `task-${Date.now()}`;
   const taskColor = getTaskColor(taskId);
   
@@ -64,6 +66,7 @@ function finishTaskCreation() {
   selectedFields.clear();
 }
 
+// Aktualisiert die Legende der Aufträge
 function updateTaskPanel() {
   const taskContainer = document.getElementById('active-tasks');
   taskContainer.innerHTML = '';
@@ -150,6 +153,7 @@ function deleteTask(taskId) {
   }
 }
 
+// Weist einer Aufgabe eine eindeutige Farbe zu
 function getTaskColor(taskId) {
   if (!taskColors[taskId]) {
     const usedColors = Object.values(taskColors);
@@ -161,14 +165,31 @@ function getTaskColor(taskId) {
 
 async function saveTasksToServer() {
   try {
-    await fetch('/api/save-task', {
+    const res = await fetch('/api/save-task', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(tasks)
+      headers: { 'Content-Type': 'application/json' },
+      // Häufiger erwartet: Objekt statt rohes Array
+      body: JSON.stringify({ tasks }),
+      credentials: 'same-origin', // falls Cookies/CSRF
     });
-  } catch (error) {
-    console.error('Error saving tasks:', error);
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(`Save failed (${res.status}): ${text}`);
+    }
+
+    // Falls der Server 204 No Content sendet, würde res.json() scheitern:
+    // Also nur optional lesen:
+    let data = null;
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      data = await res.json().catch(() => null);
+    }
+    return data;
+  } catch (err) {
+    console.error('Error saving tasks:', err);
+    alert('Speichern fehlgeschlagen. Details in der Konsole.');
+    throw err;
   }
 }
+

@@ -1,5 +1,9 @@
-let fields = {};
+let fields = {};  // { fieldId: { layer, status, name, fileName, geojson } }
 
+/*
+loadFields - Lädt KML-Dateien vom Server, konvertiert sie in GeoJSON und fügt sie der Karte hinzu.
+Verwendet die toGeoJSON-Bibliothek zur Konvertierung.
+*/
 async function loadFields() {
   try {
     const res = await fetch('/api/list-kml');
@@ -8,12 +12,12 @@ async function loadFields() {
     for (const file of files) {
       const url = `/static/fields/${file}`;
       const response = await fetch(url);
-      const kmlText = await response.text();
+      const kmlText = await response.text();  //holt die KML daten als text
       const parser = new DOMParser();
       const kml = parser.parseFromString(kmlText, 'text/xml');
-      const geojson = toGeoJSON.kml(kml);
+      const geojson = toGeoJSON.kml(kml); // konvertiert KML in GeoJSON
 
-      geojson.features.forEach((feature, index) => {
+      geojson.features.forEach((feature, index) => {        //Erstellt fieldId = entweder feature.properties.name oder ein Fallback (dateiname-index). Prüft, ob Feld schon existiert → wenn ja, überspringen.
         const fieldId = feature.properties.name || `${file}-${index + 1}`;
 
         if (fields[fieldId]) {
@@ -31,7 +35,7 @@ async function loadFields() {
           }
         }).addTo(map);
 
-        field.on('click', () => handleFieldClick(fieldId));
+        field.on('click', () => handleFieldClick(fieldId)); // Klick-Event für Auswahl
 
         fields[fieldId] = {
           layer: field,
@@ -43,12 +47,13 @@ async function loadFields() {
       });
     }
 
-    updateLoadedFieldsList();
+    updateLoadedFieldsList(); // Aktualisiert die Liste der geladenen Felder im Dropdown-Menü
   } catch (error) {
     console.error('Fehler beim Laden der KML-Dateien vom Server:', error);
   }
 }
 
+// Handhabt Klicks auf Felder zur Auswahl/Deselektion während der Aufgabenerstellung
 function handleFieldClick(fieldId) {
   if (isCreatingTask) {
     const wasSelected = selectedFields.has(fieldId);
@@ -70,6 +75,7 @@ function handleFieldClick(fieldId) {
   }
 }
 
+// Aktualisiert die Liste der geladenen Felder im Dropdown-Menü
 function updateLoadedFieldsList() {
   const dropdown = document.getElementById('fields-dropdown');
   dropdown.innerHTML = '';
@@ -79,17 +85,19 @@ function updateLoadedFieldsList() {
     fieldEntry.className = 'field-entry';
     fieldEntry.textContent = `${fieldId} (${field.fileName || 'Unbekannte Datei'})`;
     fieldEntry.onclick = () => {
-      map.fitBounds(field.layer.getBounds());
+      map.fitBounds(field.layer.getBounds()); //zoomt auf das Feld
     };
     dropdown.appendChild(fieldEntry);
   });
 }
 
+// Zeigt oder versteckt das Dropdown-Menü für die Felder
 function toggleFieldsDropdown() {
   const dropdown = document.getElementById('fields-dropdown');
   dropdown.classList.toggle('show');
 }
 
+// Wendet Stile auf Felder basierend auf dem Status der Aufgaben an
 function applyTaskStyles() {
   tasks.forEach(task => {
     task.fields.forEach(field => {
