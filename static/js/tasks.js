@@ -215,6 +215,5 @@ async function loadTasksFromServer() {
 }
 
 window.onload = async () => {
-  //await loadFields();
   await loadTasksFromServer(); // holt gespeicherte Tasks vom Server zurück
 };
