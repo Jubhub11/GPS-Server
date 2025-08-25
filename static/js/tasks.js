@@ -10,6 +10,7 @@ let selectedFields = new Set();
 
 // Startet die Erstellung eines neuen Auftrags
 function createNewTask() {
+  const btn = document.getElementById("new-task-btn");
   if (isCreatingTask) {
     finishTaskCreation();
   } else {
