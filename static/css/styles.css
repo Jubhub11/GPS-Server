@@ -107,7 +107,7 @@ body.dark-mode {
     background: #1e1e1e;
     color: #ddd;
 }
-body.dark-mode #main-header { background: linear-gradient(90deg, #2E7D32 60%, #1B5E20 100%); }
+body.dark-mode #main-header { background: linear-gradient(90deg, #2d042f 60%, #270229 100%); }
 body.dark-mode .header-btn { background: #333; color: #fff; border: 1px solid #444; }
 body.dark-mode .header-btn:hover { background: #444; }
 body.dark-mode #legend, body.dark-mode #task-panel, body.dark-mode .fields-dropdown {
@@ -117,8 +117,9 @@ body.dark-mode #legend, body.dark-mode #task-panel, body.dark-mode .fields-dropd
 }
 body.dark-mode #map {
     background: #181818;
+    
 }
-
+ .leaflet-control-attribution {filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);}
 /* Scrollbars */
 ::-webkit-scrollbar { width: 8px; background: #f0f0f0; }
 ::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 4px; }
