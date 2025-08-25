@@ -88,12 +88,12 @@ def save_field():
 @app.route("/api/save-task", methods=["POST"])
 def save_task():
     data = request.get_json()
-    if not data:
-        return "Invalid data", 400
+    if not isinstance(data, list):  # <- Sicherstellen, dass es ein Array ist
+        return "Invalid data, expected list", 400
     
     stored_data['tasks'] = data
     save_stored_data(stored_data)
-    return "OK", 200
+    return jsonify({"status": "ok", "count": len(data)}), 200
 
 @app.route("/api/get-stored-data")
 def get_stored_data():

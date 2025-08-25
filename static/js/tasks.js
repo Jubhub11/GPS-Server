@@ -28,7 +28,7 @@ function finishTaskCreation() {
 
   const taskName = prompt('Bitte geben Sie einen Namen für den Auftrag ein:', `Auftrag ${tasks.length + 1}`);
   if (!taskName) { isCreatingTask = false; return; }
-  
+
   const taskId = `task-${Date.now()}`;
   const taskColor = getTaskColor(taskId);
   
@@ -169,8 +169,7 @@ async function saveTasksToServer() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       // Häufiger erwartet: Objekt statt rohes Array
-      body: JSON.stringify({ tasks }),
-      credentials: 'same-origin', // falls Cookies/CSRF
+      body: JSON.stringify(tasks)
     });
 
     if (!res.ok) {
