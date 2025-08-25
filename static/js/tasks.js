@@ -192,3 +192,29 @@ async function saveTasksToServer() {
   }
 }
 
+// Lädt gespeicherte Tasks vom Server und aktualisiert das Panel
+async function loadTasksFromServer() {
+  try {
+    const res = await fetch('/api/get-stored-data');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    if (data.tasks && Array.isArray(data.tasks)) {
+      tasks = data.tasks;
+      console.log("Tasks vom Server geladen:", tasks);
+
+      // UI aktualisieren
+      updateTaskPanel();
+      applyTaskStyles();
+    } else {
+      console.log("Keine gespeicherten Tasks gefunden.");
+    }
+  } catch (err) {
+    console.error('Fehler beim Laden der gespeicherten Tasks:', err);
+  }
+}
+
+window.onload = async () => {
+  await loadFields();          // falls du schon eine Funktion hast, die Felder lädt
+  await loadTasksFromServer(); // holt gespeicherte Tasks vom Server zurück
+};
