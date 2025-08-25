@@ -107,16 +107,19 @@ body.dark-mode {
     color: #ddd;
 }
 body.dark-mode #main-header { background: linear-gradient(90deg, #2E7D32 60%, #1B5E20 100%); }
-body.dark-mode .header-btn { background: #555; color: white; }
-body.dark-mode .header-btn:hover { background: #777; }
+body.dark-mode .header-btn { background: #333; color: #fff; border: 1px solid #444; }
+body.dark-mode .header-btn:hover { background: #444; }
 body.dark-mode #legend, body.dark-mode #task-panel, body.dark-mode .fields-dropdown {
-    background: #2a2a2a;
+    background: #222;
     border: 1px solid #444;
     color: #ddd;
+}
+body.dark-mode #map {
+    background: #181818;
 }
 
 /* Scrollbars */
 ::-webkit-scrollbar { width: 8px; background: #f0f0f0; }
 ::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 4px; }
-body.dark-mode ::-webkit-scrollbar { background: #2a2a2a; }
-body.dark-mode ::-webkit-scrollbar-thumb { background: #555; }
+body.dark-mode ::-webkit-scrollbar { background: #222; }
+body.dark-mode ::-webkit-scrollbar-thumb { background: #444; }
