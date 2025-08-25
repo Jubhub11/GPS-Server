@@ -65,20 +65,7 @@ async function fetchGPSData() {
     }
 }
 
-async function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    const btn = document.getElementById("darkmode-btn");
 
-    if (document.body.classList.contains("dark-mode")) {
-        btn.textContent = "☀️ Tag";
-        map.removeLayer(lightTile);
-        darkTile.addTo(map);
-    } else {
-        btn.textContent = "🌙 Nacht";
-        map.removeLayer(darkTile);
-        lightTile.addTo(map);
-    }
-}
 
 // Reset track
 async function resetTrack() {
@@ -117,3 +104,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     fetchGPSData();
     setInterval(fetchGPSData, 10000);
 });
+
+
+window.toggleDarkMode = function() {
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("🌙 Nacht")) {
+        btn.textContent = "☀️ Tag";
+        map.removeLayer(lightTile);
+        darkTile.addTo(map);
+    } else {
+        btn.textContent = "🌙 Nacht";
+        map.removeLayer(darkTile);
+        lightTile.addTo(map);
+    }
+}
+

@@ -51,6 +51,7 @@ html, body {
     height: calc(100% - 56px);
 }
 
+
 /* Dropdown */
 #loaded-fields-container { position: relative; display: inline-block; }
 .fields-dropdown {
@@ -74,7 +75,7 @@ html, body {
 /* Task Panel links */
 #task-panel {
     position: fixed;
-    top: 120px;
+    top: 135px;
     left: 18px;
     z-index: 1000;
     max-width: 300px;
