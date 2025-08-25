@@ -47,45 +47,45 @@
     <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
-    <script>
-        // Globale Leaflet Layer
-        let map, lightTile, darkTile;
+   <script>
+let map, lightTile, darkTile;
 
-        function initMap() {
-            map = L.map('map').setView([48.2,16.3],13);
+function initMap() {
+    map = L.map('map').setView([48.2,16.3],13);
 
-            lightTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OSM contributors'
-            }).addTo(map);
+    lightTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OSM contributors'
+    }).addTo(map);
 
-            darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; CartoDB &copy; OSM contributors'
-            });
-        }
+    darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; CartoDB &copy; OSM contributors'
+    });
+}
 
-        initMap();
+initMap();
 
-        // Dropdown
-        function toggleFieldsDropdown() {
-            const dropdown = document.getElementById('fields-dropdown');
-            dropdown.classList.toggle('show');
-        }
+// Dropdown
+window.toggleFieldsDropdown = function() {
+    const dropdown = document.getElementById('fields-dropdown');
+    dropdown.classList.toggle('show');
+}
 
-        // Dark Mode
-        function toggleDarkMode() {
-            document.body.classList.toggle("dark-mode");
-            const btn = document.getElementById("darkmode-btn");
+// Dark Mode
+window.toggleDarkMode = function() {
+    document.body.classList.toggle("dark-mode");
+    const btn = document.getElementById("darkmode-btn");
 
-            if (document.body.classList.contains("dark-mode")) {
-                btn.textContent = "☀️ Tag";
-                map.removeLayer(lightTile);
-                darkTile.addTo(map);
-            } else {
-                btn.textContent = "🌙 Nacht";
-                map.removeLayer(darkTile);
-                lightTile.addTo(map);
-            }
-        }
-    </script>
+    if (document.body.classList.contains("dark-mode")) {
+        btn.textContent = "☀️ Tag";
+        map.removeLayer(lightTile);
+        darkTile.addTo(map);
+    } else {
+        btn.textContent = "🌙 Nacht";
+        map.removeLayer(darkTile);
+        lightTile.addTo(map);
+    }
+}
+</script>
+
 </body>
 </html>
