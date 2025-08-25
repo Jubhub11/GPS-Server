@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 window.toggleDarkMode = function() {
+    const btn = document.getElementById("darkmode-btn");
     document.body.classList.toggle("dark-mode");
 
     if (document.body.classList.contains("🌙 Nacht")) {
