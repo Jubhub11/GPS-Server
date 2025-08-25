@@ -51,11 +51,8 @@ html, body {
     height: calc(100% - 56px);
 }
 
-#loaded-fields-container {
-    position: relative; /* <- wichtig für korrektes absolute-positioned Dropdown */
-    display: inline-block;
-}
 /* Dropdown */
+#loaded-fields-container { position: relative; display: inline-block; }
 .fields-dropdown {
     position: absolute;
     top: 100%;
@@ -71,9 +68,7 @@ html, body {
     display: none;
     z-index: 2100;
 }
-.fields-dropdown.show {
-    display: block;
-}
+.fields-dropdown.show { display: block; }
 
 /* Task Panel links */
 #task-panel {
