@@ -1,4 +1,3 @@
-let map;
 let markers = [];
 let polylines = {};
 
@@ -95,8 +94,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof loadFields === 'function') {
         await loadFields();
     }
-    if (typeof loadStoredData === 'function') {
-        await loadStoredData();
+    if (typeof loadTasks === 'function') {
+        await loadTasks();
     }
     if (typeof applyTaskStyles === 'function') {
         applyTaskStyles();

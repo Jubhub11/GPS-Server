@@ -23,7 +23,7 @@
             </div>
             <button id="reset-btn" class="header-btn" onclick="resetTrack()">🔄 Reset Track</button>
             <button id="darkmode-btn" class="header-btn" onclick="toggleDarkMode()">🌙 Nacht</button>
-                <div id="loaded-fields-container">
+                <div id="loaded-days-container">
                 <button class="header-btn" onclick="toggleDaysDropdown()">Archivierte Tage ▼</button>
                 <div id="days-dropdown" class="days-dropdown"></div>
         </div>
@@ -51,18 +51,10 @@
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
    <script>
-let map, lightTile, darkTile;
 
+let map;
 function initMap() {
     map = L.map('map').setView([48.2,16.3],13);
-
-    lightTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OSM contributors'
-    }).addTo(map);
-
-    darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; CartoDB &copy; OSM contributors'
-    });
 }
 
 initMap();
