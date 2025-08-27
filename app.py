@@ -57,7 +57,7 @@ def receive_gps():
 
     gps_data.append({
         "lat": lat,
-        "long": lon,
+        "lon": lon,
         "timestamp": timestamp,
         "device_id": device_id
     })
