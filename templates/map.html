@@ -52,6 +52,18 @@
 
     <script>
 
+    function initMap() {
+    map = L.map('map', {
+        center: [47.7381, 16.3969],
+        zoom: 13
+    });
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    initMap();
+}
     // Dropdown
     window.toggleFieldsDropdown = function() {
         const dropdown = document.getElementById('fields-dropdown');

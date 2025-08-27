@@ -1,17 +1,6 @@
 let markers = [];
 let polylines = {};
 
-// Map initialization
-function initMap() {
-    map = L.map('map', {
-        center: [47.7381, 16.3969],
-        zoom: 13
-    });
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-}
 
 // GPS data fetching
 async function fetchGPSData() {
