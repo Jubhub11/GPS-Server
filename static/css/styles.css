@@ -77,6 +77,7 @@ html, body {
     max-width: 300px;
     max-height: 70vh;
     overflow-y: auto;
+    color: #222;
     background: #fff;
     border-radius: 8px;
     padding: 12px;
@@ -92,6 +93,7 @@ html, body {
     max-width: 200px;
     max-height: 320px;
     overflow-y: auto;
+    color: #222;
     background: #fff;
     border-radius: 8px;
     padding: 12px;
