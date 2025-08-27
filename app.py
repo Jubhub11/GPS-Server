@@ -61,31 +61,11 @@ init_db()
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 gps_data = []  # Liste zum Speichern der GPS-Punkte
-DATA_FILE = 'stored_data.json'
-
 
 @app.route('/static/<path:path>')
 def send_static(path):
     return send_from_directory('static', path)
 
-
-# Lade gespeicherte Daten beim Start
-def load_stored_data():
-    if os.path.exists(DATA_FILE):
-        try:
-            with open(DATA_FILE, 'r') as f:
-                return json.load(f)
-        except:
-            return {'fields': {}, 'tasks': []}
-    return {'fields': {}, 'tasks': []}
-
-# Speichere Daten in JSON-Datei
-def save_stored_data(data):
-    with open(DATA_FILE, 'w') as f:
-        json.dump(data, f)
-
-# Initialisiere gespeicherte Daten
-stored_data = load_stored_data()
 
 @app.route("/")
 def index():
@@ -198,10 +178,6 @@ def save_task():
     conn.close()
     return jsonify({"status": "ok", "count": len(data)}), 200
 
-@app.route("/api/get-stored-data")
-def get_stored_data():
-    return jsonify(stored_data)
-
 @app.route("/api/get-fields")
 def get_fields():
     conn = get_db()
@@ -235,7 +211,7 @@ def list_kml_files():
         return jsonify(files)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-        
+
 def delete_km_entries(entry_id=None):
     try:
         if entry_id:

@@ -199,9 +199,9 @@ async function saveTasksToServer() {
 }
 
 // Lädt gespeicherte Tasks vom Server und aktualisiert das Panel
-async function loadTasksFromServer() {
+/*async function loadTasksFromServer() {
   try {
-    const res = await fetch('/api/get-stored-data');
+    const res = await fetch('/api/get-tasks');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
@@ -218,10 +218,11 @@ async function loadTasksFromServer() {
   } catch (err) {
     console.error('Fehler beim Laden der gespeicherten Tasks:', err);
   }
-}
+}*/
 
 window.onload = async () => {
-  await loadTasksFromServer(); // holt gespeicherte Tasks vom Server zurück
+    await loadFields();
+    await loadTasks();
 };
 
 // tasks.js
@@ -236,9 +237,3 @@ async function loadTasks() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-    initMap();
-    await loadFields();
-    await loadTasks();
-    // ...weitere Initialisierung...
-});
