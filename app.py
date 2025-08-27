@@ -43,7 +43,6 @@ def receive_gps():
         return "Unauthorized", 403
 
     data = request.get_json()
-    print("Received JSON:", data)
 
     if not data or "lat" not in data or "long" not in data or "device_id" not in data:
         return "Invalid data", 400
