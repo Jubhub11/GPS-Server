@@ -60,6 +60,7 @@ init_db()
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 
+gps_data = []  # Liste zum Speichern der GPS-Punkte
 
 @app.route('/static/<path:path>')
 def send_static(path):
