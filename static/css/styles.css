@@ -10,6 +10,14 @@ html, body {
     transition: background 0.3s, color 0.3s;
 }
 
+#map { 
+  position: fixed;
+  top: 56px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+}
+
 /* Header grün */
 #main-header {
     position: fixed;
@@ -39,15 +47,6 @@ html, body {
     transition: background 0.2s;
 }
 .header-btn:hover { background: rgba(255,255,255,0.9); }
-
-/* Map */
-#map { 
-  position: absolute;
-  top: 56px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
 
 /* Dropdown */
 #loaded-fields-container { position: relative; display: inline-block; }
