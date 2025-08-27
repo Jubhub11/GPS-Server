@@ -6,7 +6,7 @@ html, body {
     background: #f7f8fa;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #222;
-    overflow: hidden;
+    overflow: auto;
     transition: background 0.3s, color 0.3s;
 }
 
@@ -42,13 +42,11 @@ html, body {
 
 /* Map */
 #map { 
-    position: absolute;
-    top: 56px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: calc(100% - 56px);
+  position: absolute;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 /* Dropdown */
