@@ -6,7 +6,7 @@ html, body {
     background: #f7f8fa;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #222;
-    overflow: auto;
+    overflow: hidden;
     transition: background 0.3s, color 0.3s;
 }
 
