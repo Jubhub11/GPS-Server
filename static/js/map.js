@@ -1,6 +1,6 @@
 let markers = [];
 let polylines = {};
-
+let map;
 
 // GPS data fetching
 async function fetchGPSData() {
