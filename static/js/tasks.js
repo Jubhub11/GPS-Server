@@ -223,3 +223,22 @@ async function loadTasksFromServer() {
 window.onload = async () => {
   await loadTasksFromServer(); // holt gespeicherte Tasks vom Server zurück
 };
+
+// tasks.js
+async function loadTasks() {
+  try {
+    const res = await fetch('/api/get-tasks');
+    tasks = await res.json();
+    updateTaskPanel();
+    applyTaskStyles();
+  } catch (error) {
+    console.error('Fehler beim Laden der Aufgaben aus der Datenbank:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    initMap();
+    await loadFields();
+    await loadTasks();
+    // ...weitere Initialisierung...
+});

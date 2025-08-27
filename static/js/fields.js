@@ -4,48 +4,42 @@ let fields = {};  // { fieldId: { layer, status, name, fileName, geojson } }
 loadFields - Lädt KML-Dateien vom Server, konvertiert sie in GeoJSON und fügt sie der Karte hinzu.
 Verwendet die toGeoJSON-Bibliothek zur Konvertierung.
 */
+// fields.js
 async function loadFields() {
   try {
-    const res = await fetch('/api/list-kml');
-    const files = await res.json();
+    const res = await fetch('/api/get-fields');
+    const fieldsData = await res.json();
 
-    for (const file of files) {
-      const url = `/static/fields/${file}`;
-      const response = await fetch(url);
-      const kmlText = await response.text();  //holt die KML daten als text
-      const parser = new DOMParser();
-      const kml = parser.parseFromString(kmlText, 'text/xml');
-      const geojson = toGeoJSON.kml(kml); // konvertiert KML in GeoJSON
+    for (const fieldId in fieldsData) {
+      const fieldInfo = fieldsData[fieldId];
+      const geojson = fieldInfo.geojson;
 
-      geojson.features.forEach((feature, index) => {        //Erstellt fieldId = entweder feature.properties.name oder ein Fallback (dateiname-index). Prüft, ob Feld schon existiert → wenn ja, überspringen.
-        const fieldId = feature.properties.name || `${file}-${index + 1}`;
-
-        if (fields[fieldId]) {
-          console.log(`Feld ${fieldId} existiert bereits und wird übersprungen`);
-          return;
+      const field = L.geoJSON(geojson, {
+        style: {
+          color: '#3388ff',
+          fillColor: '#3388ff',
+          weight: 2,
+          opacity: 0.6,
+          fillOpacity: 0.2
         }
+      }).addTo(map);
 
-        const field = L.geoJSON(feature, {
-          style: {
-            color: '#3388ff',
-            fillColor: '#3388ff',
-            weight: 2,
-            opacity: 0.6,
-            fillOpacity: 0.2
-          }
-        }).addTo(map);
+      field.on('click', () => handleFieldClick(fieldId));
 
-        field.on('click', () => handleFieldClick(fieldId)); // Klick-Event für Auswahl
-
-        fields[fieldId] = {
-          layer: field,
-          status: 'normal',
-          name: fieldId,
-          fileName: file,
-          geojson: feature
-        };
-      });
+      fields[fieldId] = {
+        layer: field,
+        status: 'normal',
+        name: fieldInfo.name,
+        fileName: fieldInfo.fileName,
+        geojson: geojson
+      };
     }
+
+    updateLoadedFieldsList();
+  } catch (error) {
+    console.error('Fehler beim Laden der Felder aus der Datenbank:', error);
+  }
+}
 
     updateLoadedFieldsList(); // Aktualisiert die Liste der geladenen Felder im Dropdown-Menü
   } catch (error) {
