@@ -220,10 +220,6 @@ async function saveTasksToServer() {
   }
 }*/
 
-window.onload = async () => {
-    await loadFields();
-    await loadTasks();
-};
 
 // tasks.js
 async function loadTasks() {

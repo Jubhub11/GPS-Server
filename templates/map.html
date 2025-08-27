@@ -1,97 +1,94 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>GPS Tracker</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <script src="https://unpkg.com/@tmcw/togeojson@5.8.1/dist/togeojson.umd.js"></script>
-</head>
-<body>
-    <!-- Header bar -->
-    <div id="main-header">
-    <div class="header-buttons">
-    <div id="loaded-fields-container">
-    <button class="header-btn" onclick="toggleFieldsDropdown()">🌱 Geladene Felder ▼</button>
-    <div id="fields-dropdown" class="fields-dropdown"></div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>GPS Tracker</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+        <script src="https://unpkg.com/@tmcw/togeojson@5.8.1/dist/togeojson.umd.js"></script>
+    </head>
+    <body>
+        <!-- Header bar -->
+        <div id="main-header">
+        <div class="header-buttons">
+        <div id="loaded-fields-container">
+        <button class="header-btn" onclick="toggleFieldsDropdown()">🌱 Geladene Felder ▼</button>
+        <div id="fields-dropdown" class="fields-dropdown"></div>
+                </div>
+                <div id="auto-center-container">
+                    <label>
+                        <input type="checkbox" id="auto-center" checked>
+                        Automatisch zentrieren
+                    </label>
+                </div>
+                <button id="reset-btn" class="header-btn" onclick="resetTrack()">🔄 Reset Track</button>
+                <button id="darkmode-btn" class="header-btn" onclick="toggleDarkMode()">🌙 Nacht</button>
+                    <div id="loaded-days-container">
+                    <button class="header-btn" onclick="toggleDaysDropdown()">Archivierte Tage ▼</button>
+                    <div id="days-dropdown" class="days-dropdown"></div>
             </div>
-            <div id="auto-center-container">
-                <label>
-                    <input type="checkbox" id="auto-center" checked>
-                    Automatisch zentrieren
-                </label>
-            </div>
-            <button id="reset-btn" class="header-btn" onclick="resetTrack()">🔄 Reset Track</button>
-            <button id="darkmode-btn" class="header-btn" onclick="toggleDarkMode()">🌙 Nacht</button>
-                <div id="loaded-days-container">
-                <button class="header-btn" onclick="toggleDaysDropdown()">Archivierte Tage ▼</button>
-                <div id="days-dropdown" class="days-dropdown"></div>
         </div>
-    </div>
 
-    <div id="map"></div>
+        <div id="map"></div>
 
-    <!-- Legende -->
-    <div id="legend">
-        <h4>Geräte-Legende</h4>
-        <ul id="legend-list"></ul>
-    </div>
+        <!-- Legende -->
+        <div id="legend">
+            <h4>Geräte-Legende</h4>
+            <ul id="legend-list"></ul>
+        </div>
 
-    <!-- Aufgaben -->
-    <div id="task-panel">
-        <h4>Aufträge</h4>
-        <button id="new-task-btn" class="header-btn" onclick="createNewTask()">➕ Neuer Auftrag</button>
-        <div id="active-tasks"></div>
-    </div>
+        <!-- Aufgaben -->
+        <div id="task-panel">
+            <h4>Aufträge</h4>
+            <button id="new-task-btn" class="header-btn" onclick="createNewTask()">➕ Neuer Auftrag</button>
+            <div id="active-tasks"></div>
+        </div>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="{{ url_for('static', filename='js/fields.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/legend.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="{{ url_for('static', filename='js/fields.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/legend.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
-   <script>
+    <script>
 
-let map;
-function initMap() {
-    map = L.map('map').setView([48.2,16.3],13);
-}
+    let map;
 
-initMap();
+    initMap();
 
-// Dropdown
-window.toggleFieldsDropdown = function() {
-    const dropdown = document.getElementById('fields-dropdown');
-    dropdown.classList.toggle('show');
-}
-
-window.toggleDaysDropdown = async function() {
-    const dropdown = document.getElementById('days-dropdown');
-    dropdown.classList.toggle('show');
-    if (dropdown.classList.contains('show')) {
-        const res = await fetch('/api/gps/days');
-        const days = await res.json();
-        dropdown.innerHTML = '';
-        days.forEach(day => {
-            const btn = document.createElement('button');
-            btn.textContent = day;
-            btn.className = 'header-btn';
-            btn.onclick = () => {
-                loadGPSForDay(day);
-                dropdown.classList.remove('show');
-            };
-            dropdown.appendChild(btn);
-        });
+    // Dropdown
+    window.toggleFieldsDropdown = function() {
+        const dropdown = document.getElementById('fields-dropdown');
+        dropdown.classList.toggle('show');
     }
-};
 
-async function loadGPSForDay(day) {
-    const res = await fetch(`/api/gps/day/${day}`);
-    const gpsPoints = await res.json();
-    // Zeige die Punkte auf der Karte (z.B. als Marker oder Linie)
-}
+    window.toggleDaysDropdown = async function() {
+        const dropdown = document.getElementById('days-dropdown');
+        dropdown.classList.toggle('show');
+        if (dropdown.classList.contains('show')) {
+            const res = await fetch('/api/gps/days');
+            const days = await res.json();
+            dropdown.innerHTML = '';
+            days.forEach(day => {
+                const btn = document.createElement('button');
+                btn.textContent = day;
+                btn.className = 'header-btn';
+                btn.onclick = () => {
+                    loadGPSForDay(day);
+                    dropdown.classList.remove('show');
+                };
+                dropdown.appendChild(btn);
+            });
+        }
+    };
 
-</script>
+    async function loadGPSForDay(day) {
+        const res = await fetch(`/api/gps/day/${day}`);
+        const gpsPoints = await res.json();
+        // Zeige die Punkte auf der Karte (z.B. als Marker oder Linie)
+    }
 
-</body>
-</html>
+    </script>
+
+    </body>
+    </html>

@@ -36,17 +36,10 @@ window.loadFields = async function() {
     }
 
     updateLoadedFieldsList();
-   catch (error) {
+  } catch (error) {
     console.error('Fehler beim Laden der Felder aus der Datenbank:', error);
   }
-
-
-    updateLoadedFieldsList(); // Aktualisiert die Liste der geladenen Felder im Dropdown-Menü
-   catch (error) {
-    console.error('Fehler beim Laden der KML-Dateien vom Server:', error);
-  }}
 }
-
 
 // Handhabt Klicks auf Felder zur Auswahl/Deselektion während der Aufgabenerstellung
 function handleFieldClick(fieldId) {
